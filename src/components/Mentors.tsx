@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Mentor } from "../data/editions";
 import Reveal from "./Reveal";
 
@@ -9,14 +10,18 @@ const initials = (name: string) =>
     .join("");
 
 function MentorCard({ mentor }: { mentor: Mentor }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImg = Boolean(mentor.avatar) && !imgFailed;
+
   return (
     <article className="glass group h-full p-5 transition hover:border-white/20 hover:bg-white/[0.06]">
       <div className="flex items-center gap-4">
-        {mentor.avatar ? (
+        {showImg ? (
           <img
             src={mentor.avatar}
             alt={mentor.name}
             loading="lazy"
+            onError={() => setImgFailed(true)}
             className="h-14 w-14 shrink-0 rounded-full object-cover ring-1 ring-white/15"
           />
         ) : (

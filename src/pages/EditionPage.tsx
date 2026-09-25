@@ -2,7 +2,9 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Reveal from "../components/Reveal";
 import ProgramList from "../components/ProgramList";
+import { scrollToHash } from "../components/HashLink";
 import Mentors from "../components/Mentors";
+import ProjectsButton from "../components/ProjectsButton";
 import Sponsors from "../components/Sponsors";
 import { currentEdition, editionPath, editions, findEdition } from "../data/editions";
 import NotFound from "./NotFound";
@@ -68,12 +70,22 @@ export default function EditionPage() {
           </Reveal>
 
           <Reveal delay={130}>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <ProjectsButton edition={edition} isCurrent={isCurrent} />
+            </div>
+          </Reveal>
+
+          <Reveal delay={150}>
             <div className="mt-6 flex flex-wrap gap-2">
               {anchors.map((a) => (
                 <a
                   key={a.href}
                   href={a.href}
-                  className="rounded-lg border border-white/10 px-3.5 py-2 text-sm text-slate-300 transition hover:border-white/25 hover:bg-white/5 hover:text-white"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToHash(a.href);
+                  }}
+                  className="cursor-pointer rounded-lg border border-white/10 px-3.5 py-2 text-sm text-slate-300 transition hover:border-white/25 hover:bg-white/5 hover:text-white"
                 >
                   {a.label}
                 </a>

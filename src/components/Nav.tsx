@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import HashLink from "./HashLink";
 import { currentEdition, editionPath } from "../data/editions";
 
 const links = [
@@ -36,15 +37,25 @@ export default function Nav() {
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
-          {links.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              className="rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white"
-            >
-              {l.label}
-            </NavLink>
-          ))}
+          {links.map((l) =>
+            l.to.includes("#") ? (
+              <HashLink
+                key={l.to}
+                to={l.to}
+                className="cursor-pointer rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white"
+              >
+                {l.label}
+              </HashLink>
+            ) : (
+              <Link
+                key={l.to}
+                to={l.to}
+                className="rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-white"
+              >
+                {l.label}
+              </Link>
+            )
+          )}
           <Link
             to={editionPath(currentEdition)}
             className="ml-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-slate-200"
@@ -68,16 +79,27 @@ export default function Nav() {
 
       {open && (
         <div className="border-t border-white/10 bg-[var(--color-ink)]/95 px-5 py-3 md:hidden">
-          {links.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              onClick={() => setOpen(false)}
-              className="block rounded-lg px-3 py-2.5 text-sm text-slate-300 hover:bg-white/5"
-            >
-              {l.label}
-            </Link>
-          ))}
+          {links.map((l) =>
+            l.to.includes("#") ? (
+              <HashLink
+                key={l.to}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className="block cursor-pointer rounded-lg px-3 py-2.5 text-sm text-slate-300 hover:bg-white/5"
+              >
+                {l.label}
+              </HashLink>
+            ) : (
+              <Link
+                key={l.to}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className="block rounded-lg px-3 py-2.5 text-sm text-slate-300 hover:bg-white/5"
+              >
+                {l.label}
+              </Link>
+            )
+          )}
           <Link
             to={editionPath(currentEdition)}
             onClick={() => setOpen(false)}

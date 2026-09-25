@@ -59,6 +59,10 @@ export const editions: Edition[] = [
     applyUrl: "https://forms.gle/xxxxxxxx",
     applyDeadline: "2027-03-01",   // format ISO (AAAA-LL-ZZ)
 
+    // Lista de proiecte — doar la ediția curentă, vezi secțiunea de mai jos:
+    projectsUrl: "https://docs.google.com/spreadsheets/d/xxxxxxxx",
+    projectsPublicFrom: "2027-04-10",
+
     program: [ /* vezi mai jos */ ],
     mentors: [ /* vezi mai jos */ ],
     sponsors: [ /* vezi mai jos */ ],
@@ -110,14 +114,50 @@ mentors: [
 ],
 ```
 
-Pozele mentorilor se pun în [`public/img/mentori/`](public/img/mentori) și se referă cu calea
-`/img/mentori/<fisier>`. Recomandat: pătrate, minim 200×200px.
+**Pozele** se pun în [`public/img/mentori/`](public/img/mentori) și se referă cu calea
+`/img/mentori/<fisier>`. Recomandat: pătrate, minim 200×200px, JPG sau PNG.
+
+Mentorii ediției de toamnă 2026 au momentan avatare generate (fișierele `.svg` din acel
+folder). Ca să pui pozele reale, copiezi imaginea în folder și schimbi extensia din `avatar`:
+
+```ts
+avatar: "/img/mentori/razvan-deaconescu.jpg",   // în loc de .svg
+```
+
+Dacă fișierul din `avatar` lipsește sau nu se încarcă, cardul afișează automat inițialele
+mentorului pe un fundal în degrade — nu rămâne nicio imagine ruptă.
 
 **Dacă `mentors` este o listă goală sau lipsește:**
 - pentru **ediția curentă** secțiunea apare cu mesajul „Echipa se anunță în curând”;
 - pentru **edițiile trecute** secțiunea nu apare deloc.
 
-### 4. Adaugi sponsorii (când îi ai)
+### 4. Publici lista de proiecte
+
+Lista de proiecte open source dintre care își aleg participanții este un spreadsheet extern.
+Butonul **„Vezi lista de proiecte"** apare în hero-ul primei pagini și al paginii de ediție,
+**doar pentru ediția curentă** — edițiile trecute nu îl arată deloc.
+
+```ts
+projectsUrl: "https://docs.google.com/spreadsheets/d/xxxxxxxx",
+projectsPublicFrom: "2026-11-09",   // ziua în care lista devine publică
+```
+
+Comportamentul butonului:
+
+| Situație | Ce se vede |
+| --- | --- |
+| `projectsUrl` completat și data din `projectsPublicFrom` a trecut | buton activ, deschide spreadsheet-ul într-un tab nou |
+| `projectsPublicFrom` este în viitor, sau `projectsUrl` lipsește | buton inactiv, cu textul „Lista de proiecte · din 9 noiembrie 2026" |
+| `projectsUrl` completat, fără `projectsPublicFrom` | buton activ imediat |
+| ediția nu este cea curentă | butonul nu apare |
+
+Pune `projectsPublicFrom` cu câteva zile înainte de primul hackathon, ca participanții să aibă
+timp să se uite peste proiecte. Nu trebuie să revii pe site în ziua respectivă — butonul se
+activează singur.
+
+Spreadsheet-ul trebuie să fie partajat cu „oricine are linkul, poate vedea”.
+
+### 5. Adaugi sponsorii (când îi ai)
 
 Secțiunea de sponsori apare **după** cea de mentori și **numai dacă ediția are sponsori** —
 până atunci nu se vede nimic pe pagină, nu e nevoie de niciun placeholder.
@@ -142,7 +182,7 @@ Dacă omiți `tier`, sponsorul e tratat ca `"partener"`. Dacă omiți `logo`, se
 ca text. Logo-urile se pun în [`public/img/sponsori/`](public/img/sponsori) — de preferat SVG
 sau PNG transparent, deschis la culoare (fundalul site-ului e întunecat).
 
-### 5. Când se închid înscrierile
+### 6. Când se închid înscrierile
 
 Ștergi `applyUrl` din obiectul ediției. Butonul de înscriere din hero, bannerul de pe pagina
 ediției și secțiunea de call-to-action de pe prima pagină dispar automat.

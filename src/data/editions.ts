@@ -47,6 +47,14 @@ export type Edition = {
   applyDeadline?: string;
   location?: string;
   program: Session[];
+  /** link catre spreadsheet-ul cu proiectele open source disponibile */
+  projectsUrl?: string;
+  /**
+   * Data de la care lista de proiecte devine publica (ISO, AAAA-LL-ZZ).
+   * Inainte de ea butonul apare dezactivat, cu data la care se publica lista.
+   * Lipsa => lista e publica imediat ce `projectsUrl` e completat.
+   */
+  projectsPublicFrom?: string;
   /** instructorii si mentorii editiei; lista goala => sectiunea arata "in curand" */
   mentors?: Mentor[];
   /** sponsorii si partenerii editiei; lipsa sau lista goala => sectiunea nu apare deloc */
@@ -75,13 +83,26 @@ export const editions: Edition[] = [
     // applyUrl: "https://forms.gle/...",
     // applyDeadline: "2026-10-05",
     location: "București, format fizic",
-    mentors: [],
+
+    // Linkul catre spreadsheet-ul cu proiecte. Butonul apare doar la editia
+    // curenta si devine activ in ziua din `projectsPublicFrom` (inaintea
+    // primului hackathon, 14 noiembrie 2026).
+    // projectsUrl: "https://docs.google.com/spreadsheets/d/...",
+    projectsPublicFrom: "2026-11-09",
+
+    mentors: [
+      { name: "Răzvan Deaconescu", role: "instructor", avatar: "/img/mentori/razvan-deaconescu.svg" },
+      { name: "Radu Mariaș", role: "instructor", avatar: "/img/mentori/radu-marias.svg" },
+      { name: "Anton Kulaga", role: "instructor", avatar: "/img/mentori/anton-kulaga.svg" },
+      { name: "Livia Zaharia", role: "instructor", avatar: "/img/mentori/livia-zaharia.svg" },
+    ],
+
     program: [
       { date: "Sâmbătă, 10 octombrie 2026", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
-      { date: "Sâmbătă, 17 octombrie 2026", time: "10–13", title: "Dezvoltare colaborativă cu GitHub", kind: W },
-      { date: "Sâmbătă, 24 octombrie 2026", time: "10–13", title: "Formatul Markdown", kind: W },
-      { date: "Sâmbătă, 31 octombrie 2026", time: "10–13", title: "Medii de lucru, dezvoltare și deployment cu Docker", kind: W },
-      { date: "Duminică, 8 noiembrie 2026", time: "10–13", title: "Bune practici în inginerie", kind: W },
+      { date: "Sâmbătă, 17 octombrie 2026", time: "10–13", title: "Git avansat și dezvoltare colaborativă cu GitHub", kind: W },
+      { date: "Sâmbătă, 24 octombrie 2026", time: "10–13", title: "Documentație și formatul Markdown", kind: W },
+      { date: "Sâmbătă, 31 octombrie 2026", time: "10–13", title: "Medii de lucru și deployment cu Docker", kind: W },
+      { date: "Duminică, 8 noiembrie 2026", time: "10–13", title: "Automatizare și CI/CD cu GitHub Actions", kind: W },
       { date: "Sâmbătă, 14 noiembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
       { date: "Sâmbătă, 21 noiembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
       { date: "Sâmbătă, 28 noiembrie 2026", time: "—", title: "Pauză", kind: L },

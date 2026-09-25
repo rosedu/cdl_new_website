@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import ProgramList from "../components/ProgramList";
 import EditionCard from "../components/EditionCard";
+import ProjectsButton from "../components/ProjectsButton";
 import { currentEdition, editionPath, editions, legacyEditions } from "../data/editions";
 
 const pillars = [
@@ -84,6 +85,7 @@ export default function Home() {
               >
                 Vezi ediția curentă
               </Link>
+              <ProjectsButton edition={currentEdition} isCurrent />
               <Link
                 to="/editii"
                 className="rounded-xl px-6 py-3.5 text-sm font-semibold text-slate-300 transition hover:text-white"
