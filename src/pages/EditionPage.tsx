@@ -2,7 +2,9 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Reveal from "../components/Reveal";
 import ProgramList from "../components/ProgramList";
-import { editionPath, editions, findEdition } from "../data/editions";
+import Mentors from "../components/Mentors";
+import Sponsors from "../components/Sponsors";
+import { currentEdition, editionPath, editions, findEdition } from "../data/editions";
 import NotFound from "./NotFound";
 
 export default function EditionPage() {
@@ -21,6 +23,12 @@ export default function EditionPage() {
   const idx = editions.findIndex((e) => e.id === edition.id);
   const newer = editions[idx - 1];
   const older = editions[idx + 1];
+  const isCurrent = edition.id === currentEdition.id;
+  const anchors = [
+    { href: "#program", label: "Program" },
+    ...(edition.mentors?.length || isCurrent ? [{ href: "#mentori", label: "Mentori" }] : []),
+    ...(edition.sponsors?.length ? [{ href: "#sponsori", label: "Sponsori" }] : []),
+  ];
   const counts = {
     workshops: edition.program.filter((s) => s.kind === "workshop").length,
     hackathons: edition.program.filter((s) => s.kind === "hackathon").length,
@@ -56,6 +64,20 @@ export default function EditionPage() {
               {edition.location && (
                 <span className="rounded-full bg-white/5 px-3 py-1.5 text-slate-300">{edition.location}</span>
               )}
+            </div>
+          </Reveal>
+
+          <Reveal delay={130}>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {anchors.map((a) => (
+                <a
+                  key={a.href}
+                  href={a.href}
+                  className="rounded-lg border border-white/10 px-3.5 py-2 text-sm text-slate-300 transition hover:border-white/25 hover:bg-white/5 hover:text-white"
+                >
+                  {a.label}
+                </a>
+              ))}
             </div>
           </Reveal>
 
@@ -96,7 +118,7 @@ export default function EditionPage() {
         </Reveal>
       </section>
 
-      <section className="mx-auto max-w-5xl px-5 pb-12">
+      <section id="program" className="mx-auto max-w-5xl scroll-mt-24 px-5 pb-12">
         <Reveal>
           <h2 className="text-2xl font-bold text-white">Program</h2>
         </Reveal>
@@ -104,6 +126,10 @@ export default function EditionPage() {
           <ProgramList program={edition.program} />
         </div>
       </section>
+
+      <Mentors mentors={edition.mentors} upcoming={isCurrent} />
+
+      <Sponsors sponsors={edition.sponsors} />
 
       <section className="mx-auto max-w-5xl px-5 pb-8">
         <div className="grid gap-4 sm:grid-cols-2">

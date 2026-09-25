@@ -7,6 +7,29 @@ export type Session = {
   kind: "workshop" | "hackathon" | "final" | "liber";
 };
 
+export type Mentor = {
+  name: string;
+  /** rolul in editie, ex. "instructor" sau "mentor" */
+  role?: string;
+  /** proiectul open source coordonat */
+  project?: string;
+  projectUrl?: string;
+  github?: string;
+  /** cale catre poza, ex. "/img/mentori/nume.jpg"; lipsa => initiale */
+  avatar?: string;
+  bio?: string;
+};
+
+export type SponsorTier = "principal" | "partener" | "sustinator";
+
+export type Sponsor = {
+  name: string;
+  url?: string;
+  /** cale catre logo, ex. "/img/sponsori/nume.svg"; lipsa => doar numele */
+  logo?: string;
+  tier?: SponsorTier;
+};
+
 export type Edition = {
   /** cheie unica, ex. "2025-toamna" */
   id: string;
@@ -24,6 +47,10 @@ export type Edition = {
   applyDeadline?: string;
   location?: string;
   program: Session[];
+  /** instructorii si mentorii editiei; lista goala => sectiunea arata "in curand" */
+  mentors?: Mentor[];
+  /** sponsorii si partenerii editiei; lipsa sau lista goala => sectiunea nu apare deloc */
+  sponsors?: Sponsor[];
   /** site-ul vechi, pentru editiile arhivate */
   legacyUrl?: string;
   highlights?: string[];
@@ -35,6 +62,33 @@ const F = "final" as const;
 const L = "liber" as const;
 
 export const editions: Edition[] = [
+  {
+    id: "2026-toamna",
+    year: 2026,
+    season: "toamna",
+    label: "Toamnă 2026",
+    period: "10 octombrie – 12 decembrie 2026",
+    tagline: "Zece sâmbete de open source, de la primul commit la prezentarea finală.",
+    description:
+      "Ediția de toamnă 2026: cinci ateliere tehnice — Git, GitHub, Markdown, Docker și bune practici de inginerie software — urmate de hackathoane în care lucrezi la un proiect open source real, alături de un mentor.",
+    // Când se deschid înscrierile, adaugă aici linkul către formular și termenul limită:
+    // applyUrl: "https://forms.gle/...",
+    // applyDeadline: "2026-10-05",
+    location: "București, format fizic",
+    mentors: [],
+    program: [
+      { date: "Sâmbătă, 10 octombrie 2026", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
+      { date: "Sâmbătă, 17 octombrie 2026", time: "10–13", title: "Dezvoltare colaborativă cu GitHub", kind: W },
+      { date: "Sâmbătă, 24 octombrie 2026", time: "10–13", title: "Formatul Markdown", kind: W },
+      { date: "Sâmbătă, 31 octombrie 2026", time: "10–13", title: "Medii de lucru, dezvoltare și deployment cu Docker", kind: W },
+      { date: "Duminică, 8 noiembrie 2026", time: "10–13", title: "Bune practici în inginerie", kind: W },
+      { date: "Sâmbătă, 14 noiembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
+      { date: "Sâmbătă, 21 noiembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
+      { date: "Sâmbătă, 28 noiembrie 2026", time: "—", title: "Pauză", kind: L },
+      { date: "Sâmbătă, 5 decembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
+      { date: "Sâmbătă, 12 decembrie 2026", time: "17–22", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+    ],
+  },
   {
     id: "2026-vara",
     year: 2026,
