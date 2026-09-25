@@ -144,8 +144,10 @@ vezi [`src/data/projects-2026-toamna.ts`](src/data/projects-2026-toamna.ts). Îl
 {
   name: "rencfs",                                       // devine link către `url`
   url: "https://github.com/xoriors/rencfs",
-  feature: "Ce anume se lucrează la proiect în cadrul ediției.",
   mentors: ["radu-marias"],                             // unul sau mai mulți, după `id`
+
+  // Câmpuri opționale, păstrate în date dar neafișate în dialog:
+  feature: "Ce anume se lucrează la proiect.",
   startingPoint: "https://github.com/xoriors/rencfs/issues/236",
   channel: "https://discord.gg/xxxxxxx",
   channelLabel: "Discord, alege CDL pentru acces la canal",
@@ -153,12 +155,15 @@ vezi [`src/data/projects-2026-toamna.ts`](src/data/projects-2026-toamna.ts). Îl
 }
 ```
 
-Un proiect cu mai mulți mentori se pune o singură dată, cu toate id-urile în `mentors` — apare
-în dialogul fiecăruia dintre ei. Un proiect cu mai multe teme separate (ex. `rencfs` are trei)
-se scrie ca intrări separate, cu același `name` și `url`, dar cu `feature` diferit.
+Dialogul mentorului afișează **doar numele proiectelor**, fiecare link către `url`. Un proiect
+cu mai multe teme se scrie ca intrări separate cu același `name` și `url` (ex. `rencfs` are
+trei), dar apare o singură dată în listă — dedublarea se face după `name` + `url`.
 
-Doar `name`, `feature` și `mentors` sunt obligatorii. Numărul de proiecte afișat pe card se
-calculează automat.
+Un proiect cu mai mulți mentori se pune o singură dată, cu toate id-urile în `mentors` — apare
+în dialogul fiecăruia dintre ei.
+
+Doar `name` și `mentors` sunt obligatorii. Numărul de proiecte afișat pe cardul mentorului se
+calculează automat, după dedublare.
 
 ### 4. Publici lista de proiecte
 

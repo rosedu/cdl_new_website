@@ -305,6 +305,18 @@ export const findEdition = (year: string, season?: string) =>
 /** Editia curenta: cea mai recenta din lista (lista e ordonata descrescator). */
 export const currentEdition = editions[0];
 
-/** Proiectele coordonate de un mentor in cadrul unei editii. */
-export const projectsByMentor = (edition: Edition, mentorId: string) =>
-  edition.projects?.filter((p) => p.mentors.includes(mentorId)) ?? [];
+/**
+ * Proiectele coordonate de un mentor in cadrul unei editii.
+ * Un proiect cu mai multe teme apare o singura data in lista — in date fiecare
+ * tema e o intrare separata, dar in dialog afisam doar numele proiectului.
+ */
+export const projectsByMentor = (edition: Edition, mentorId: string) => {
+  const seen = new Set<string>();
+  return (edition.projects ?? []).filter((p) => {
+    if (!p.mentors.includes(mentorId)) return false;
+    const key = `${p.name}|${p.url ?? ""}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
