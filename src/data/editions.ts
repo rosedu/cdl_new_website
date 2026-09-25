@@ -100,9 +100,11 @@ export const editions: Edition[] = [
     tagline: "Zece sâmbete de open source, de la primul commit la prezentarea finală.",
     description:
       "Ediția de toamnă 2026: cinci ateliere tehnice — Git, GitHub, Markdown, Docker și bune practici de inginerie software — urmate de hackathoane în care lucrezi la un proiect open source real, alături de un mentor.",
-    // Când se deschid înscrierile, adaugă aici linkul către formular și termenul limită:
-    // applyUrl: "https://forms.gle/...",
-    // applyDeadline: "2026-10-05",
+    // Când se deschid înscrierile, decomentează linia de mai jos și pune linkul
+    // formularului. Bannerul „Înscrieri deschise" apare automat pe prima pagină
+    // și pe pagina ediției, și dispare singur după `applyDeadline`.
+    // applyUrl: "https://forms.gle/xxxxxxxx",
+    applyDeadline: "2026-10-05",
     location: "București, format fizic",
 
     // Linkul catre spreadsheet-ul cu proiecte. Butonul apare doar la editia
@@ -163,8 +165,7 @@ export const editions: Edition[] = [
     tagline: "Nouă ședințe intensive, trei săptămâni, un proiect open source.",
     description:
       "Ediția intensivă de vară: marți, joi și sâmbătă, timp de trei săptămâni. Cinci ateliere tehnice, urmate de patru hackathoane în care lucrezi la un proiect open source real, alături de un mentor.",
-    applyUrl: "https://forms.gle/34RRJGdcK4ymn7kBA",
-    applyDeadline: "2026-06-20",
+    // Înscrierile s-au închis pe 20 iunie 2026.
     location: "București, format fizic",
     program: [
       { date: "Marți, 23 iunie 2026", time: "09–12", title: "Controlul versiunilor folosind Git", kind: W },
@@ -304,6 +305,19 @@ export const findEdition = (year: string, season?: string) =>
 
 /** Editia curenta: cea mai recenta din lista (lista e ordonata descrescator). */
 export const currentEdition = editions[0];
+
+/**
+ * Inscrierile sunt deschise doar daca editia are formular, este editia curenta
+ * si termenul limita nu a trecut. Asa o editie veche nu mai anunta inscrieri
+ * deschise doar pentru ca i-a ramas linkul formularului in date.
+ */
+export const isApplyOpen = (edition: Edition) => {
+  if (!edition.applyUrl || edition.id !== currentEdition.id) return false;
+  if (!edition.applyDeadline) return true;
+  const end = new Date(edition.applyDeadline);
+  end.setHours(23, 59, 59, 999);
+  return new Date() <= end;
+};
 
 /**
  * Proiectele coordonate de un mentor in cadrul unei editii.

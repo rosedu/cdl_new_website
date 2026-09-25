@@ -6,7 +6,7 @@ import { scrollToHash } from "../components/HashLink";
 import Mentors from "../components/Mentors";
 import ProjectsButton from "../components/ProjectsButton";
 import Sponsors from "../components/Sponsors";
-import { currentEdition, editionPath, editions, findEdition } from "../data/editions";
+import { currentEdition, editionPath, editions, findEdition, isApplyOpen } from "../data/editions";
 import NotFound from "./NotFound";
 
 export default function EditionPage() {
@@ -93,7 +93,7 @@ export default function EditionPage() {
             </div>
           </Reveal>
 
-          {edition.applyUrl && (
+          {isApplyOpen(edition) && (
             <Reveal delay={160}>
               <div className="glass mt-10 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>

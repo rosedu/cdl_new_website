@@ -3,7 +3,7 @@ import Reveal from "../components/Reveal";
 import ProgramList from "../components/ProgramList";
 import EditionCard from "../components/EditionCard";
 import ProjectsButton from "../components/ProjectsButton";
-import { currentEdition, editionPath, editions, legacyEditions } from "../data/editions";
+import { currentEdition, editionPath, editions, isApplyOpen, legacyEditions } from "../data/editions";
 
 const pillars = [
   {
@@ -36,7 +36,7 @@ const stats = [
 ];
 
 export default function Home() {
-  const applyOpen = Boolean(currentEdition.applyUrl);
+  const applyOpen = isApplyOpen(currentEdition);
 
   return (
     <>

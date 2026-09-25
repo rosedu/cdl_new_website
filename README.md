@@ -216,10 +216,23 @@ Dacă omiți `tier`, sponsorul e tratat ca `"partener"`. Dacă omiți `logo`, se
 ca text. Logo-urile se pun în [`public/img/sponsori/`](public/img/sponsori) — de preferat SVG
 sau PNG transparent, deschis la culoare (fundalul site-ului e întunecat).
 
-### 6. Când se închid înscrierile
+### 6. Deschizi și închizi înscrierile
 
-Ștergi `applyUrl` din obiectul ediției. Butonul de înscriere din hero, bannerul de pe pagina
-ediției și secțiunea de call-to-action de pe prima pagină dispar automat.
+Bannerul **„Înscrieri deschise"** de pe prima pagină, butonul din hero și bannerul de pe pagina
+ediției apar toate pe baza acelorași două câmpuri:
+
+```ts
+applyUrl: "https://forms.gle/xxxxxxxx",
+applyDeadline: "2026-10-05",
+```
+
+Ca să le afișezi, e suficient să pui `applyUrl` pe ediție. Ca să le ascunzi, ai două variante:
+lași termenul din `applyDeadline` să treacă — dispar singure la sfârșitul acelei zile — sau
+ștergi `applyUrl`.
+
+Înscrierile se consideră deschise **doar pentru ediția curentă** (prima din listă). O ediție
+veche căreia i-a rămas `applyUrl` în date nu mai anunță înscrieri, oricât de vechi ar fi
+formularul.
 
 ---
 
