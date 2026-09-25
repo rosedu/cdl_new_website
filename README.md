@@ -22,7 +22,7 @@ Build de producție: `npm run build` (output în `dist/`).
 | --- | --- |
 | `/` | pagina principală — hero, despre, programul ediției curente, arhivă |
 | `/:an/:sezon` | pagina unei ediții, ex. `/2026/toamna`, `/2025/primavara` |
-| `/:an/:sezon#mentori` | secțiunea de instructori și mentori a ediției |
+| `/:an/:sezon#mentori` | secțiunea de mentori a ediției; click pe un mentor deschide proiectele lui |
 | `/:an/:sezon#sponsori` | secțiunea de sponsori și parteneri (apare doar dacă ediția are sponsori) |
 | `/editii` | lista tuturor edițiilor, inclusiv cele istorice (2013–2020) |
 | orice altceva | pagină 404 |
@@ -98,21 +98,24 @@ Numărul de ateliere și de hackathoane afișat pe carduri se calculează singur
 
 ### 3. Adaugi mentorii
 
-Secțiunea de mentori apare pe pagina fiecărei ediții. Singurul câmp obligatoriu este `name`:
+Secțiunea **Mentori** apare pe pagina fiecărei ediții. Fiecare mentor e un card pe care dai
+click și se deschide un dialog cu poza, adresele de email și proiectele pe care le coordonează.
 
 ```ts
 mentors: [
   {
+    id: "nume-prenume",                          // obligatoriu, leagă mentorul de proiectele lui
     name: "Nume Prenume",
-    role: "instructor",                          // sau "mentor" — opțional
-    project: "coala",                            // proiectul coordonat — opțional
-    projectUrl: "https://github.com/coala",      // opțional
-    github: "username",                          // opțional, devine link către profil
+    emails: ["adresa@exemplu.ro"],               // una sau mai multe; toate devin linkuri mailto
+    github: "username",                          // opțional
     avatar: "/img/mentori/nume-prenume.jpg",     // opțional — fără el se afișează inițialele
     bio: "O propoziție-două despre ce face.",    // opțional
   },
 ],
 ```
+
+`id` este cheia care leagă mentorul de proiecte — trebuie să fie unic în cadrul ediției și să
+apară identic în `mentors` din fiecare proiect.
 
 **Pozele** se pun în [`public/img/mentori/`](public/img/mentori) și se referă cu calea
 `/img/mentori/<fisier>`. Recomandat: pătrate, minim 200×200px, JPG sau PNG.
@@ -128,8 +131,34 @@ Dacă fișierul din `avatar` lipsește sau nu se încarcă, cardul afișează au
 mentorului pe un fundal în degrade — nu rămâne nicio imagine ruptă.
 
 **Dacă `mentors` este o listă goală sau lipsește:**
-- pentru **ediția curentă** secțiunea apare cu mesajul „Echipa se anunță în curând”;
+- pentru **ediția curentă** secțiunea apare cu mesajul „Mentorii se anunță în curând”;
 - pentru **edițiile trecute** secțiunea nu apare deloc.
+
+### 3b. Adaugi proiectele mentorilor
+
+Proiectele stau într-un fișier separat per ediție, ca să nu se umfle `editions.ts` —
+vezi [`src/data/projects-2026-toamna.ts`](src/data/projects-2026-toamna.ts). Îl imporți în
+`editions.ts` și îl pui pe câmpul `projects` al ediției.
+
+```ts
+{
+  name: "rencfs",                                       // devine link către `url`
+  url: "https://github.com/xoriors/rencfs",
+  feature: "Ce anume se lucrează la proiect în cadrul ediției.",
+  mentors: ["radu-marias"],                             // unul sau mai mulți, după `id`
+  startingPoint: "https://github.com/xoriors/rencfs/issues/236",
+  channel: "https://discord.gg/xxxxxxx",
+  channelLabel: "Discord, alege CDL pentru acces la canal",
+  slots: "1–2 locuri",
+}
+```
+
+Un proiect cu mai mulți mentori se pune o singură dată, cu toate id-urile în `mentors` — apare
+în dialogul fiecăruia dintre ei. Un proiect cu mai multe teme separate (ex. `rencfs` are trei)
+se scrie ca intrări separate, cu același `name` și `url`, dar cu `feature` diferit.
+
+Doar `name`, `feature` și `mentors` sunt obligatorii. Numărul de proiecte afișat pe card se
+calculează automat.
 
 ### 4. Publici lista de proiecte
 

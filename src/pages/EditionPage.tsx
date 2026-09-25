@@ -139,7 +139,7 @@ export default function EditionPage() {
         </div>
       </section>
 
-      <Mentors mentors={edition.mentors} upcoming={isCurrent} />
+      <Mentors edition={edition} upcoming={isCurrent} />
 
       <Sponsors sponsors={edition.sponsors} />
 

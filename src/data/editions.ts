@@ -1,3 +1,5 @@
+import { projects2026Toamna } from "./projects-2026-toamna";
+
 export type Season = "primavara" | "vara" | "toamna" | "unibuc" | "etti" | "extended";
 
 export type Session = {
@@ -8,16 +10,33 @@ export type Session = {
 };
 
 export type Mentor = {
+  /** id folosit in `Project.mentors` */
+  id: string;
   name: string;
-  /** rolul in editie, ex. "instructor" sau "mentor" */
-  role?: string;
-  /** proiectul open source coordonat */
-  project?: string;
-  projectUrl?: string;
+  /** adresele de contact; prima e cea afisata mare in dialog */
+  emails?: string[];
   github?: string;
   /** cale catre poza, ex. "/img/mentori/nume.jpg"; lipsa => initiale */
   avatar?: string;
   bio?: string;
+};
+
+export type Project = {
+  name: string;
+  /** pagina proiectului; numele devine link catre ea */
+  url?: string;
+  /** ce anume se lucreaza la proiect in cadrul editiei */
+  feature: string;
+  /** id-urile mentorilor care coordoneaza proiectul */
+  mentors: string[];
+  /** de unde incepi: repo, issue, PR-uri de integrat */
+  startingPoint?: string;
+  /** link catre canalul de comunicare (Discord, Telegram, Slack) */
+  channel?: string;
+  /** cum se numeste canalul, ex. "Discord Unikraft, canalul #cdl-ro" */
+  channelLabel?: string;
+  /** cate locuri sunt pe proiect, ex. "2-5 locuri" */
+  slots?: string;
 };
 
 export type SponsorTier = "principal" | "partener" | "sustinator";
@@ -55,8 +74,10 @@ export type Edition = {
    * Lipsa => lista e publica imediat ce `projectsUrl` e completat.
    */
   projectsPublicFrom?: string;
-  /** instructorii si mentorii editiei; lista goala => sectiunea arata "in curand" */
+  /** mentorii editiei; lista goala => sectiunea arata "in curand" */
   mentors?: Mentor[];
+  /** proiectele open source ale editiei, grupate pe mentori in dialog */
+  projects?: Project[];
   /** sponsorii si partenerii editiei; lipsa sau lista goala => sectiunea nu apare deloc */
   sponsors?: Sponsor[];
   /** site-ul vechi, pentru editiile arhivate */
@@ -91,11 +112,34 @@ export const editions: Edition[] = [
     projectsPublicFrom: "2026-11-09",
 
     mentors: [
-      { name: "Răzvan Deaconescu", role: "instructor", avatar: "/img/mentori/razvan-deaconescu.svg" },
-      { name: "Radu Mariaș", role: "instructor", avatar: "/img/mentori/radu-marias.svg" },
-      { name: "Anton Kulaga", role: "instructor", avatar: "/img/mentori/anton-kulaga.svg" },
-      { name: "Livia Zaharia", role: "instructor", avatar: "/img/mentori/livia-zaharia.svg" },
+      {
+        id: "razvan-deaconescu",
+        name: "Răzvan Deaconescu",
+        emails: ["razvand@unikraft.io", "razvan.deaconescu@upb.ro"],
+        avatar: "/img/mentori/razvan-deaconescu.svg",
+      },
+      {
+        id: "radu-marias",
+        name: "Radu Mariaș",
+        emails: ["radumarias@gmail.com"],
+        github: "radumarias",
+        avatar: "/img/mentori/radu-marias.svg",
+      },
+      {
+        id: "anton-kulaga",
+        name: "Anton Kulaga",
+        emails: ["antonkulaga@gmail.com"],
+        github: "antonkulaga",
+        avatar: "/img/mentori/anton-kulaga.svg",
+      },
+      {
+        id: "livia-zaharia",
+        name: "Livia Zaharia",
+        emails: ["liviazaharia2020@gmail.com"],
+        avatar: "/img/mentori/livia-zaharia.svg",
+      },
     ],
+    projects: projects2026Toamna,
 
     program: [
       { date: "Sâmbătă, 10 octombrie 2026", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
@@ -260,3 +304,7 @@ export const findEdition = (year: string, season?: string) =>
 
 /** Editia curenta: cea mai recenta din lista (lista e ordonata descrescator). */
 export const currentEdition = editions[0];
+
+/** Proiectele coordonate de un mentor in cadrul unei editii. */
+export const projectsByMentor = (edition: Edition, mentorId: string) =>
+  edition.projects?.filter((p) => p.mentors.includes(mentorId)) ?? [];
