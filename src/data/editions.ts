@@ -104,7 +104,7 @@ export const editions: Edition[] = [
     // The "Applications open" banner then appears automatically on the home
     // page and on the edition page, and disappears on its own after
     // `applyDeadline`.
-    // applyUrl: "https://forms.gle/xxxxxxxx",
+    applyUrl: "https://forms.gle/E4Tad1aPZH6cr6No7",
     applyDeadline: "2026-10-05",
 
     location: "Bucharest, in person",
