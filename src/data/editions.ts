@@ -1,115 +1,117 @@
-import { projects2026Toamna } from "./projects-2026-toamna";
+import { projects2026Fall } from "./projects-2026-fall";
 
-export type Season = "primavara" | "vara" | "toamna" | "unibuc" | "etti" | "extended";
+export type Season = "spring" | "summer" | "fall" | "unibuc" | "etti" | "extended";
 
 export type Session = {
   date: string;
   time: string;
   title: string;
-  kind: "workshop" | "hackathon" | "final" | "liber";
+  kind: "workshop" | "hackathon" | "final" | "break";
 };
 
 export type Mentor = {
-  /** id folosit in `Project.mentors` */
+  /** id used in `Project.mentors` */
   id: string;
   name: string;
-  /** adresele de contact; prima e cea afisata mare in dialog */
+  /** contact addresses; the first one is shown first in the dialog */
   emails?: string[];
   github?: string;
-  /** cale catre poza, ex. "/img/mentori/nume.jpg"; lipsa => initiale */
+  /** path to a photo, e.g. "/img/mentors/name.jpg"; omitted => initials */
   avatar?: string;
   bio?: string;
 };
 
 export type Project = {
   name: string;
-  /** pagina proiectului; numele devine link catre ea */
+  /** project page; the name links to it */
   url?: string;
-  /** ce anume se lucreaza la proiect in cadrul editiei */
-  feature: string;
-  /** id-urile mentorilor care coordoneaza proiectul */
+  /** what is worked on during the edition */
+  feature?: string;
+  /** ids of the mentors coordinating the project */
   mentors: string[];
-  /** de unde incepi: repo, issue, PR-uri de integrat */
+  /** where to start: repo, issue, pull requests to review */
   startingPoint?: string;
-  /** link catre canalul de comunicare (Discord, Telegram, Slack) */
+  /** link to the communication channel (Discord, Telegram, Slack) */
   channel?: string;
-  /** cum se numeste canalul, ex. "Discord Unikraft, canalul #cdl-ro" */
+  /** channel name, e.g. "Unikraft Discord, #cdl-ro" */
   channelLabel?: string;
-  /** cate locuri sunt pe proiect, ex. "2-5 locuri" */
+  /** seats available, e.g. "2-5 seats" */
   slots?: string;
 };
 
-export type SponsorTier = "principal" | "partener" | "sustinator";
+export type SponsorTier = "main" | "partner" | "supporter";
 
 export type Sponsor = {
   name: string;
   url?: string;
-  /** cale catre logo, ex. "/img/sponsori/nume.svg"; lipsa => doar numele */
+  /** path to a logo, e.g. "/img/sponsors/name.svg"; omitted => name as text */
   logo?: string;
   tier?: SponsorTier;
 };
 
 export type Edition = {
-  /** cheie unica, ex. "2025-toamna" */
+  /** unique key, e.g. "2025-fall" */
   id: string;
   year: number;
   season?: Season;
-  /** eticheta afisata, ex. "Toamnă 2025" */
+  /** displayed label, e.g. "Fall 2025" */
   label: string;
-  /** perioada pe scurt, ex. "octombrie – decembrie 2025" */
+  /** short period, e.g. "October - December 2025" */
   period: string;
   tagline: string;
   description: string;
-  /** link catre formularul de inscriere (daca inscrierile sunt deschise) */
+  /** link to the application form (only while applications are open) */
   applyUrl?: string;
-  /** termen limita de inscriere, format ISO */
+  /** application deadline, ISO format */
   applyDeadline?: string;
   location?: string;
   program: Session[];
-  /** link catre spreadsheet-ul cu proiectele open source disponibile */
+  /** link to the spreadsheet listing the open source projects */
   projectsUrl?: string;
   /**
-   * Data de la care lista de proiecte devine publica (ISO, AAAA-LL-ZZ).
-   * Inainte de ea butonul apare dezactivat, cu data la care se publica lista.
-   * Lipsa => lista e publica imediat ce `projectsUrl` e completat.
+   * Date from which the project list becomes public (ISO, YYYY-MM-DD).
+   * Before it, the button is disabled and shows the release date.
+   * Omitted => the list is public as soon as `projectsUrl` is set.
    */
   projectsPublicFrom?: string;
-  /** mentorii editiei; lista goala => sectiunea arata "in curand" */
+  /** the edition's mentors; empty list => the section shows "coming soon" */
   mentors?: Mentor[];
-  /** proiectele open source ale editiei, grupate pe mentori in dialog */
+  /** the edition's open source projects, grouped per mentor in the dialog */
   projects?: Project[];
-  /** sponsorii si partenerii editiei; lipsa sau lista goala => sectiunea nu apare deloc */
+  /** the edition's sponsors; omitted or empty => the section is not rendered */
   sponsors?: Sponsor[];
-  /** site-ul vechi, pentru editiile arhivate */
+  /** the old website, for archived editions */
   legacyUrl?: string;
-  highlights?: string[];
 };
 
 const W = "workshop" as const;
 const H = "hackathon" as const;
 const F = "final" as const;
-const L = "liber" as const;
+const B = "break" as const;
 
 export const editions: Edition[] = [
   {
-    id: "2026-toamna",
+    id: "2026-fall",
     year: 2026,
-    season: "toamna",
-    label: "Toamnă 2026",
-    period: "10 octombrie – 12 decembrie 2026",
-    tagline: "Zece sâmbete de open source, de la primul commit la prezentarea finală.",
+    season: "fall",
+    label: "Fall 2026",
+    period: "10 October - 12 December 2026",
+    tagline: "Ten Saturdays of open source, from your first commit to the final presentation.",
     description:
-      "Ediția de toamnă 2026: cinci ateliere tehnice — Git, GitHub, Markdown, Docker și bune practici de inginerie software — urmate de hackathoane în care lucrezi la un proiect open source real, alături de un mentor.",
-    // Când se deschid înscrierile, decomentează linia de mai jos și pune linkul
-    // formularului. Bannerul „Înscrieri deschise" apare automat pe prima pagină
-    // și pe pagina ediției, și dispare singur după `applyDeadline`.
+      "Five technical workshops — Git, advanced Git and GitHub, Markdown, Docker, automation and CI/CD — followed by hackathons where you work on a real open source project alongside a mentor.",
+
+    // To open applications, uncomment the line below and add the form link.
+    // The "Applications open" banner then appears automatically on the home
+    // page and on the edition page, and disappears on its own after
+    // `applyDeadline`.
     // applyUrl: "https://forms.gle/xxxxxxxx",
     applyDeadline: "2026-10-05",
-    location: "București, format fizic",
 
-    // Linkul catre spreadsheet-ul cu proiecte. Butonul apare doar la editia
-    // curenta si devine activ in ziua din `projectsPublicFrom` (inaintea
-    // primului hackathon, 14 noiembrie 2026).
+    location: "Bucharest, in person",
+
+    // Link to the project spreadsheet. The button only shows on the current
+    // edition and becomes active on `projectsPublicFrom`, shortly before the
+    // first hackathon on 14 November 2026.
     // projectsUrl: "https://docs.google.com/spreadsheets/d/...",
     projectsPublicFrom: "2026-11-09",
 
@@ -118,164 +120,164 @@ export const editions: Edition[] = [
         id: "razvan-deaconescu",
         name: "Răzvan Deaconescu",
         emails: ["razvand@unikraft.io", "razvan.deaconescu@upb.ro"],
-        avatar: "/img/mentori/razvan-deaconescu.svg",
+        avatar: "/img/mentors/razvan-deaconescu.svg",
       },
       {
         id: "radu-marias",
         name: "Radu Mariaș",
         emails: ["radumarias@gmail.com"],
         github: "radumarias",
-        avatar: "/img/mentori/radu-marias.svg",
+        avatar: "/img/mentors/radu-marias.svg",
       },
       {
         id: "anton-kulaga",
         name: "Anton Kulaga",
         emails: ["antonkulaga@gmail.com"],
         github: "antonkulaga",
-        avatar: "/img/mentori/anton-kulaga.svg",
+        avatar: "/img/mentors/anton-kulaga.svg",
       },
       {
         id: "livia-zaharia",
         name: "Livia Zaharia",
         emails: ["liviazaharia2020@gmail.com"],
-        avatar: "/img/mentori/livia-zaharia.svg",
+        avatar: "/img/mentors/livia-zaharia.svg",
       },
     ],
-    projects: projects2026Toamna,
+    projects: projects2026Fall,
 
     program: [
-      { date: "Sâmbătă, 10 octombrie 2026", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
-      { date: "Sâmbătă, 17 octombrie 2026", time: "10–13", title: "Git avansat și dezvoltare colaborativă cu GitHub", kind: W },
-      { date: "Sâmbătă, 24 octombrie 2026", time: "10–13", title: "Documentație și formatul Markdown", kind: W },
-      { date: "Sâmbătă, 31 octombrie 2026", time: "10–13", title: "Medii de lucru și deployment cu Docker", kind: W },
-      { date: "Duminică, 8 noiembrie 2026", time: "10–13", title: "Automatizare și CI/CD cu GitHub Actions", kind: W },
-      { date: "Sâmbătă, 14 noiembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 21 noiembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 28 noiembrie 2026", time: "—", title: "Pauză", kind: L },
-      { date: "Sâmbătă, 5 decembrie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 12 decembrie 2026", time: "17–22", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+      { date: "Saturday, 10 October 2026", time: "10:00-13:00", title: "Version control with Git", kind: W },
+      { date: "Saturday, 17 October 2026", time: "10:00-13:00", title: "Advanced Git and collaborative development with GitHub", kind: W },
+      { date: "Saturday, 24 October 2026", time: "10:00-13:00", title: "Documentation and the Markdown format", kind: W },
+      { date: "Saturday, 31 October 2026", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
+      { date: "Sunday, 8 November 2026", time: "10:00-13:00", title: "Automation and CI/CD with GitHub Actions", kind: W },
+      { date: "Saturday, 14 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 21 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 28 November 2026", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 5 December 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 12 December 2026", time: "17:00-22:00", title: "Final presentations. Graduation", kind: F },
     ],
   },
   {
-    id: "2026-vara",
+    id: "2026-summer",
     year: 2026,
-    season: "vara",
-    label: "Vară 2026",
-    period: "23 iunie – 11 iulie 2026",
-    tagline: "Nouă ședințe intensive, trei săptămâni, un proiect open source.",
+    season: "summer",
+    label: "Summer 2026",
+    period: "23 June - 11 July 2026",
+    tagline: "Nine intensive sessions, three weeks, one open source project.",
     description:
-      "Ediția intensivă de vară: marți, joi și sâmbătă, timp de trei săptămâni. Cinci ateliere tehnice, urmate de patru hackathoane în care lucrezi la un proiect open source real, alături de un mentor.",
-    // Înscrierile s-au închis pe 20 iunie 2026.
-    location: "București, format fizic",
+      "The intensive summer edition: Tuesdays, Thursdays and Saturdays over three weeks. Five technical workshops, followed by four hackathons working on a real open source project alongside a mentor.",
+    // Applications closed on 20 June 2026.
+    location: "Bucharest, in person",
     program: [
-      { date: "Marți, 23 iunie 2026", time: "09–12", title: "Controlul versiunilor folosind Git", kind: W },
-      { date: "Joi, 25 iunie 2026", time: "09–12", title: "Tehnici avansate de Git. Dezvoltare colaborativă cu GitHub", kind: W },
-      { date: "Sâmbătă, 27 iunie 2026", time: "10–13", title: "Formatul Markdown", kind: W },
-      { date: "Marți, 30 iunie 2026", time: "09–12", title: "Medii de lucru, dezvoltare și deployment cu Docker", kind: W },
-      { date: "Joi, 2 iulie 2026", time: "09–12", title: "Automatizare folosind GitHub", kind: W },
-      { date: "Sâmbătă, 4 iulie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Marți, 7 iulie 2026", time: "09–12", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Joi, 9 iulie 2026", time: "09–12", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 11 iulie 2026", time: "10–18", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+      { date: "Tuesday, 23 June 2026", time: "09:00-12:00", title: "Version control with Git", kind: W },
+      { date: "Thursday, 25 June 2026", time: "09:00-12:00", title: "Advanced Git. Collaborative development with GitHub", kind: W },
+      { date: "Saturday, 27 June 2026", time: "10:00-13:00", title: "The Markdown format", kind: W },
+      { date: "Tuesday, 30 June 2026", time: "09:00-12:00", title: "Development environments and deployment with Docker", kind: W },
+      { date: "Thursday, 2 July 2026", time: "09:00-12:00", title: "Automation with GitHub", kind: W },
+      { date: "Saturday, 4 July 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Tuesday, 7 July 2026", time: "09:00-12:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Thursday, 9 July 2026", time: "09:00-12:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 11 July 2026", time: "10:00-18:00", title: "Final presentations. Graduation", kind: F },
     ],
   },
   {
-    id: "2026-primavara",
+    id: "2026-spring",
     year: 2026,
-    season: "primavara",
-    label: "Primăvară 2026",
-    period: "8 martie – 16 mai 2026",
-    tagline: "Ediția de primăvară, câte o ședință pe weekend.",
+    season: "spring",
+    label: "Spring 2026",
+    period: "8 March - 16 May 2026",
+    tagline: "The spring edition, one session per weekend.",
     description:
-      "Unsprezece weekenduri de Git, GitHub, Markdown, Docker și bune practici de inginerie software, încheiate cu hackathoane pe proiecte open source.",
-    location: "București, format fizic",
+      "Eleven weekends of Git, GitHub, Markdown, Docker and software engineering best practices, wrapped up with hackathons on open source projects.",
+    location: "Bucharest, in person",
     program: [
-      { date: "Duminică, 8 martie 2026", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
-      { date: "Sâmbătă, 14 martie 2026", time: "10–13", title: "Dezvoltare colaborativă cu GitHub", kind: W },
-      { date: "Sâmbătă, 21 martie 2026", time: "10–13", title: "Formatul Markdown", kind: W },
-      { date: "Duminică, 29 martie 2026", time: "10–13", title: "Medii de lucru, dezvoltare și deployment cu Docker", kind: W },
-      { date: "Duminică, 4 aprilie 2026", time: "10–13", title: "Bune practici în inginerie", kind: W },
-      { date: "Sâmbătă, 11 aprilie 2026", time: "—", title: "Pauză", kind: L },
-      { date: "Sâmbătă, 18 aprilie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 25 aprilie 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 2 mai 2026", time: "—", title: "Pauză", kind: L },
-      { date: "Sâmbătă, 9 mai 2026", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 16 mai 2026", time: "17–22", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+      { date: "Sunday, 8 March 2026", time: "10:00-13:00", title: "Version control with Git", kind: W },
+      { date: "Saturday, 14 March 2026", time: "10:00-13:00", title: "Collaborative development with GitHub", kind: W },
+      { date: "Saturday, 21 March 2026", time: "10:00-13:00", title: "The Markdown format", kind: W },
+      { date: "Sunday, 29 March 2026", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
+      { date: "Sunday, 4 April 2026", time: "10:00-13:00", title: "Software engineering best practices", kind: W },
+      { date: "Saturday, 11 April 2026", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 18 April 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 25 April 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 2 May 2026", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 9 May 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 16 May 2026", time: "17:00-22:00", title: "Final presentations. Graduation", kind: F },
     ],
   },
   {
-    id: "2025-toamna",
+    id: "2025-fall",
     year: 2025,
-    season: "toamna",
-    label: "Toamnă 2025",
-    period: "11 octombrie – 13 decembrie 2025",
-    tagline: "Ediția de toamnă 2025.",
+    season: "fall",
+    label: "Fall 2025",
+    period: "11 October - 13 December 2025",
+    tagline: "The 2025 fall edition.",
     description:
-      "Zece ședințe de sâmbătă: ateliere tehnice în prima parte, hackathoane pe proiecte open source în a doua.",
-    location: "București, format fizic",
+      "Ten Saturday sessions: technical workshops in the first half, hackathons on open source projects in the second.",
+    location: "Bucharest, in person",
     program: [
-      { date: "Sâmbătă, 11 octombrie 2025", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
-      { date: "Sâmbătă, 18 octombrie 2025", time: "10–13", title: "Dezvoltare colaborativă cu GitHub", kind: W },
-      { date: "Sâmbătă, 25 octombrie 2025", time: "10–13", title: "Formatul Markdown", kind: W },
-      { date: "Sâmbătă, 1 noiembrie 2025", time: "10–13", title: "Medii de lucru, dezvoltare și deployment cu Docker", kind: W },
-      { date: "Duminică, 8 noiembrie 2025", time: "10–13", title: "Bune practici în inginerie", kind: W },
-      { date: "Sâmbătă, 15 noiembrie 2025", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 22 noiembrie 2025", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 29 noiembrie 2025", time: "—", title: "Pauză", kind: L },
-      { date: "Sâmbătă, 6 decembrie 2025", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 13 decembrie 2025", time: "17–22", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+      { date: "Saturday, 11 October 2025", time: "10:00-13:00", title: "Version control with Git", kind: W },
+      { date: "Saturday, 18 October 2025", time: "10:00-13:00", title: "Collaborative development with GitHub", kind: W },
+      { date: "Saturday, 25 October 2025", time: "10:00-13:00", title: "The Markdown format", kind: W },
+      { date: "Saturday, 1 November 2025", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
+      { date: "Sunday, 8 November 2025", time: "10:00-13:00", title: "Software engineering best practices", kind: W },
+      { date: "Saturday, 15 November 2025", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 22 November 2025", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 29 November 2025", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 6 December 2025", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 13 December 2025", time: "17:00-22:00", title: "Final presentations. Graduation", kind: F },
     ],
   },
   {
-    id: "2025-primavara",
+    id: "2025-spring",
     year: 2025,
-    season: "primavara",
-    label: "Primăvară 2025",
-    period: "8 martie – 17 mai 2025",
-    tagline: "Ediția de primăvară 2025.",
+    season: "spring",
+    label: "Spring 2025",
+    period: "8 March - 17 May 2025",
+    tagline: "The 2025 spring edition.",
     description:
-      "Unsprezece ședințe de weekend, de la primii commits până la contribuții acceptate în proiecte open source.",
-    location: "București, format fizic",
+      "Eleven weekend sessions, from your first commits to contributions accepted in open source projects.",
+    location: "Bucharest, in person",
     program: [
-      { date: "Sâmbătă, 8 martie 2025", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
-      { date: "Sâmbătă, 15 martie 2025", time: "10–13", title: "Dezvoltare colaborativă cu GitHub", kind: W },
-      { date: "Sâmbătă, 22 martie 2025", time: "10–13", title: "Formatul Markdown", kind: W },
-      { date: "Sâmbătă, 29 martie 2025", time: "10–13", title: "Medii de lucru, dezvoltare și deployment cu Docker", kind: W },
-      { date: "Duminică, 6 aprilie 2025", time: "10–13", title: "Bune practici în inginerie", kind: W },
-      { date: "Sâmbătă, 12 aprilie 2025", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 19 aprilie 2025", time: "—", title: "Pauză", kind: L },
-      { date: "Sâmbătă, 26 aprilie 2025", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 3 mai 2025", time: "—", title: "Pauză", kind: L },
-      { date: "Sâmbătă, 10 mai 2025", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 17 mai 2025", time: "17–22", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+      { date: "Saturday, 8 March 2025", time: "10:00-13:00", title: "Version control with Git", kind: W },
+      { date: "Saturday, 15 March 2025", time: "10:00-13:00", title: "Collaborative development with GitHub", kind: W },
+      { date: "Saturday, 22 March 2025", time: "10:00-13:00", title: "The Markdown format", kind: W },
+      { date: "Saturday, 29 March 2025", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
+      { date: "Sunday, 6 April 2025", time: "10:00-13:00", title: "Software engineering best practices", kind: W },
+      { date: "Saturday, 12 April 2025", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 19 April 2025", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 26 April 2025", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 3 May 2025", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 10 May 2025", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 17 May 2025", time: "17:00-22:00", title: "Final presentations. Graduation", kind: F },
     ],
   },
   {
-    id: "2024-toamna",
+    id: "2024-fall",
     year: 2024,
-    season: "toamna",
-    label: "Toamnă 2024",
-    period: "12 octombrie – 14 decembrie 2024",
-    tagline: "Relansarea CDL, după o pauză de patru ani.",
+    season: "fall",
+    label: "Fall 2024",
+    period: "12 October - 14 December 2024",
+    tagline: "CDL relaunched, after a four-year break.",
     description:
-      "Prima ediție după 2020: zece ședințe de sâmbătă, ateliere de Git, GitHub, Markdown, Docker și bune practici, apoi hackathoane pe proiecte open source.",
-    location: "București, format fizic",
+      "The first edition since 2020: ten Saturday sessions with workshops on Git, GitHub, Markdown, Docker and best practices, followed by hackathons on open source projects.",
+    location: "Bucharest, in person",
     program: [
-      { date: "Sâmbătă, 12 octombrie 2024", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
-      { date: "Sâmbătă, 19 octombrie 2024", time: "10–13", title: "Dezvoltare colaborativă cu GitHub", kind: W },
-      { date: "Sâmbătă, 26 octombrie 2024", time: "10–13", title: "Formatul Markdown", kind: W },
-      { date: "Sâmbătă, 2 noiembrie 2024", time: "10–13", title: "Medii de lucru, dezvoltare și deployment cu Docker", kind: W },
-      { date: "Sâmbătă, 9 noiembrie 2024", time: "10–13", title: "Bune practici în ingineria software", kind: W },
-      { date: "Sâmbătă, 16 noiembrie 2024", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 23 noiembrie 2024", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 30 noiembrie 2024", time: "—", title: "Pauză", kind: L },
-      { date: "Sâmbătă, 7 decembrie 2024", time: "10–13", title: "Hackathon: lucru la proiect open source", kind: H },
-      { date: "Sâmbătă, 14 decembrie 2024", time: "10–13", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+      { date: "Saturday, 12 October 2024", time: "10:00-13:00", title: "Version control with Git", kind: W },
+      { date: "Saturday, 19 October 2024", time: "10:00-13:00", title: "Collaborative development with GitHub", kind: W },
+      { date: "Saturday, 26 October 2024", time: "10:00-13:00", title: "The Markdown format", kind: W },
+      { date: "Saturday, 2 November 2024", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
+      { date: "Saturday, 9 November 2024", time: "10:00-13:00", title: "Software engineering best practices", kind: W },
+      { date: "Saturday, 16 November 2024", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 23 November 2024", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 30 November 2024", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 7 December 2024", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 14 December 2024", time: "10:00-13:00", title: "Final presentations. Graduation", kind: F },
     ],
   },
 ];
 
-/** Editii arhivate, pastrate pe site-ul vechi. */
+/** Archived editions, kept on the old website. */
 export const legacyEditions = [
   { id: "2020", year: 2020, label: "CDL 2020", url: "https://cdl.rosedu.org/editions/2020" },
   { id: "2019", year: 2019, label: "CDL 2019", url: "https://cdl.rosedu.org/editions/2019" },
@@ -285,17 +287,15 @@ export const legacyEditions = [
   { id: "2015", year: 2015, label: "CDL 2015", url: "https://cdl.rosedu.org/editions/2015" },
   { id: "etti-2014", year: 2014, label: "CDL ETTI 2014", url: "https://cdl.rosedu.org/editions/etti_2014" },
   { id: "extended-2014", year: 2014, label: "CDL Extended 2014", url: "https://cdl.rosedu.org/editions/extended_2014" },
-  { id: "primavara-2013", year: 2013, label: "CDL Primăvară 2013", url: "https://cdl.rosedu.org/editions/spring_2013" },
+  { id: "spring-2013", year: 2013, label: "CDL Spring 2013", url: "https://cdl.rosedu.org/editions/spring_2013" },
   { id: "unibuc-2013", year: 2013, label: "CDL Unibuc 2013", url: "https://cdl.rosedu.org/editions/unibuc_2013" },
 ];
 
-export const seasonLabel: Record<Season, string> = {
-  primavara: "Primăvară",
-  vara: "Vară",
-  toamna: "Toamnă",
-  unibuc: "Unibuc",
-  etti: "ETTI",
-  extended: "Extended",
+/** Romanian season slugs used before the site was translated; kept as redirects. */
+export const legacySeasonSlugs: Record<string, Season> = {
+  primavara: "spring",
+  vara: "summer",
+  toamna: "fall",
 };
 
 export const editionPath = (e: Edition) => (e.season ? `/${e.year}/${e.season}` : `/${e.year}`);
@@ -303,13 +303,13 @@ export const editionPath = (e: Edition) => (e.season ? `/${e.year}/${e.season}` 
 export const findEdition = (year: string, season?: string) =>
   editions.find((e) => String(e.year) === year && (season ? e.season === season : !e.season));
 
-/** Editia curenta: cea mai recenta din lista (lista e ordonata descrescator). */
+/** The current edition: the most recent one (the list is ordered newest first). */
 export const currentEdition = editions[0];
 
 /**
- * Inscrierile sunt deschise doar daca editia are formular, este editia curenta
- * si termenul limita nu a trecut. Asa o editie veche nu mai anunta inscrieri
- * deschise doar pentru ca i-a ramas linkul formularului in date.
+ * Applications are open only if the edition has a form, is the current edition
+ * and the deadline has not passed. This keeps an old edition from advertising
+ * open applications just because its form link is still in the data.
  */
 export const isApplyOpen = (edition: Edition) => {
   if (!edition.applyUrl || edition.id !== currentEdition.id) return false;
@@ -320,9 +320,9 @@ export const isApplyOpen = (edition: Edition) => {
 };
 
 /**
- * Proiectele coordonate de un mentor in cadrul unei editii.
- * Un proiect cu mai multe teme apare o singura data in lista — in date fiecare
- * tema e o intrare separata, dar in dialog afisam doar numele proiectului.
+ * The projects coordinated by a mentor during an edition.
+ * A project with several tracks appears once: in the data each track is a
+ * separate entry, but the dialog only shows the project name.
  */
 export const projectsByMentor = (edition: Edition, mentorId: string) => {
   const seen = new Set<string>();

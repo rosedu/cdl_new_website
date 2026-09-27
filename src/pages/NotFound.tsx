@@ -2,18 +2,24 @@ import { Link } from "react-router-dom";
 
 export default function NotFound() {
   return (
-    <section className="mx-auto flex max-w-2xl flex-col items-center px-5 py-32 text-center">
-      <p className="font-mono text-7xl font-bold text-white/10">404</p>
-      <h1 className="mt-4 text-3xl font-bold text-white">Pagina nu există</h1>
+    <section className="mx-auto max-w-2xl px-5 py-28">
+      <p className="font-mono text-sm text-slate-600">404</p>
+      <h1 className="mt-3 text-2xl font-semibold text-white">Page not found</h1>
       <p className="mt-3 text-slate-400">
-        Poate cauți o ediție care nu are încă pagină. Verifică lista completă de ediții.
+        You may be looking for an edition that does not have a page yet. Check the full list of editions.
       </p>
-      <div className="mt-8 flex gap-3">
-        <Link to="/" className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black hover:bg-slate-200">
-          Acasă
+      <div className="mt-7 flex gap-3">
+        <Link
+          to="/"
+          className="rounded-md bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-900 transition-colors hover:bg-white"
+        >
+          Home
         </Link>
-        <Link to="/editii" className="rounded-xl border border-white/15 px-5 py-3 text-sm font-semibold text-white hover:bg-white/5">
-          Toate edițiile
+        <Link
+          to="/editions"
+          className="rounded-md border border-white/15 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-white/30 hover:text-white"
+        >
+          All editions
         </Link>
       </div>
     </section>

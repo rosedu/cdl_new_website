@@ -1,10 +1,10 @@
-# CDL — Curs de Dezvoltare Liberă
+# CDL — Free Software Development Course
 
-Site-ul [cdl.rosedu.org](https://cdl.rosedu.org), rescris în React și pregătit pentru deploy pe Vercel.
+The [cdl.rosedu.org](https://cdl.rosedu.org) website, rewritten in React and ready to deploy on Vercel.
 
 **Stack:** Vite + React 19 + TypeScript + React Router + Tailwind CSS v4.
 
-## Rulare locală
+## Running locally
 
 ```bash
 npm install
@@ -14,237 +14,233 @@ npm install
 npm run dev
 ```
 
-Build de producție: `npm run build` (output în `dist/`).
+Production build: `npm run build` (output in `dist/`).
 
-## Rutele site-ului
+## Routes
 
-| Rută | Conținut |
+| Route | Content |
 | --- | --- |
-| `/` | pagina principală — hero, despre, programul ediției curente, arhivă |
-| `/:an/:sezon` | pagina unei ediții, ex. `/2026/toamna`, `/2025/primavara` |
-| `/:an/:sezon#mentori` | secțiunea de mentori a ediției; click pe un mentor deschide proiectele lui |
-| `/:an/:sezon#sponsori` | secțiunea de sponsori și parteneri (apare doar dacă ediția are sponsori) |
-| `/editii` | lista tuturor edițiilor, inclusiv cele istorice (2013–2020) |
-| orice altceva | pagină 404 |
+| `/` | home page — intro, about, current edition program, archive |
+| `/:year/:season` | an edition page, e.g. `/2026/fall`, `/2025/spring` |
+| `/:year/:season#mentors` | the edition's mentor section; selecting a mentor opens their projects |
+| `/:year/:season#sponsors` | sponsors and partners (only rendered if the edition has sponsors) |
+| `/editions` | every edition, including the historical ones (2013–2020) |
+| anything else | 404 page |
 
-Sezoane valide în URL: `primavara`, `vara`, `toamna`.
+Season slugs: `spring`, `summer`, `fall`. The Romanian slugs used before the site was
+translated (`primavara`, `vara`, `toamna`) redirect to their English equivalents, so older
+links keep working — see `legacySeasonSlugs` in `src/data/editions.ts`.
 
 ---
 
-## Cum adaugi o ediție nouă
+## Adding a new edition
 
-**Tot conținutul stă într-un singur fișier: [`src/data/editions.ts`](src/data/editions.ts).**
-Nu trebuie să atingi nicio componentă și nicio rută — pagina ediției, linkul din meniu,
-programul de pe prima pagină și arhiva se generează automat din datele de acolo.
+**All content lives in one file: [`src/data/editions.ts`](src/data/editions.ts).** You never
+need to touch a component or a route — the edition page, the menu link, the home page program
+and the archive are all generated from that data.
 
-### 1. Adaugi un obiect la **începutul** listei `editions`
+### 1. Add an object at the **top** of the `editions` list
 
-Lista este ordonată de la cea mai nouă la cea mai veche. **Primul element din listă devine
-automat ediția curentă** (`currentEdition`) — cea afișată pe prima pagină și în butonul din
-meniul de sus.
+The list is ordered newest first. **The first entry automatically becomes the current
+edition** (`currentEdition`) — the one shown on the home page and in the top menu.
 
 ```ts
 export const editions: Edition[] = [
   {
-    id: "2027-primavara",          // cheie unică, folosită intern
+    id: "2027-spring",             // unique key, used internally
     year: 2027,
-    season: "primavara",           // "primavara" | "vara" | "toamna" → dă URL-ul /2027/primavara
-    label: "Primăvară 2027",       // eticheta afișată peste tot
-    period: "6 martie – 15 mai 2027",
-    tagline: "O propoziție scurtă, apare în hero și pe cardul din arhivă.",
-    description: "Paragraful lung, apare în secțiunea „Despre ediție”.",
-    location: "București, format fizic",
+    season: "spring",              // "spring" | "summer" | "fall" → gives the URL /2027/spring
+    label: "Spring 2027",          // the label shown everywhere
+    period: "6 March - 15 May 2027",
+    tagline: "One short sentence, shown in the header and on the archive card.",
+    description: "The longer paragraph, shown under “About this edition”.",
+    location: "Bucharest, in person",
 
-    // Doar cât timp înscrierile sunt deschise:
+    // Only while applications are open:
     applyUrl: "https://forms.gle/xxxxxxxx",
-    applyDeadline: "2027-03-01",   // format ISO (AAAA-LL-ZZ)
+    applyDeadline: "2027-03-01",   // ISO format (YYYY-MM-DD)
 
-    // Lista de proiecte — doar la ediția curentă, vezi secțiunea de mai jos:
+    // The project list — current edition only, see below:
     projectsUrl: "https://docs.google.com/spreadsheets/d/xxxxxxxx",
     projectsPublicFrom: "2027-04-10",
 
-    program: [ /* vezi mai jos */ ],
-    mentors: [ /* vezi mai jos */ ],
-    sponsors: [ /* vezi mai jos */ ],
+    program: [ /* see below */ ],
+    mentors: [ /* see below */ ],
+    projects: [ /* see below */ ],
+    sponsors: [ /* see below */ ],
   },
-  // ...edițiile anterioare
+  // ...previous editions
 ];
 ```
 
-### 2. Completezi programul
+### 2. Fill in the program
 
-Fiecare ședință are un `kind` care îi dă culoarea și eticheta din timeline:
+Each session has a `kind` that sets its colour and label in the timeline:
 
-| `kind` | Etichetă | Când îl folosești |
+| `kind` | Label | When to use it |
 | --- | --- | --- |
-| `"workshop"` | Atelier | ședințele tehnice din prima parte |
-| `"hackathon"` | Hackathon | ședințele de lucru la proiect |
-| `"final"` | Final | prezentările finale / festivitatea |
-| `"liber"` | Liber | weekendurile libere (apar estompate) |
+| `"workshop"` | Workshop | the technical sessions in the first half |
+| `"hackathon"` | Hackathon | the sessions spent working on a project |
+| `"final"` | Final | final presentations and graduation |
+| `"break"` | Break | free weekends (shown dimmed) |
 
 ```ts
 program: [
-  { date: "Sâmbătă, 6 martie 2027", time: "10–13", title: "Controlul versiunilor folosind Git", kind: W },
-  { date: "Sâmbătă, 13 martie 2027", time: "10–13", title: "Dezvoltare colaborativă cu GitHub", kind: W },
-  { date: "Sâmbătă, 20 martie 2027", time: "—",     title: "Pauză", kind: L },
-  { date: "Sâmbătă, 15 mai 2027",   time: "17–22", title: "Prezentări finale. Festivitate de absolvire", kind: F },
+  { date: "Saturday, 6 March 2027", time: "10:00-13:00", title: "Version control with Git", kind: W },
+  { date: "Saturday, 13 March 2027", time: "10:00-13:00", title: "Collaborative development with GitHub", kind: W },
+  { date: "Saturday, 20 March 2027", time: "—", title: "Break", kind: B },
+  { date: "Saturday, 15 May 2027", time: "17:00-22:00", title: "Final presentations. Graduation", kind: F },
 ],
 ```
 
-`W`, `H`, `F`, `L` sunt prescurtări definite în capul fișierului (`workshop`, `hackathon`,
-`final`, `liber`). Poți scrie și direct `kind: "workshop"`.
+`W`, `H`, `F` and `B` are shorthands defined at the top of the file (`workshop`, `hackathon`,
+`final`, `break`). Writing `kind: "workshop"` directly works just as well.
 
-Numărul de ateliere și de hackathoane afișat pe carduri se calculează singur din listă.
+The workshop and hackathon counts shown on the cards are computed from this list.
 
-### 3. Adaugi mentorii
+### 3. Add the mentors
 
-Secțiunea **Mentori** apare pe pagina fiecărei ediții. Fiecare mentor e un card pe care dai
-click și se deschide un dialog cu poza, adresele de email și proiectele pe care le coordonează.
+The **Mentors** section appears on every edition page. Each mentor is a card; selecting it
+opens a dialog with their photo, email addresses and the projects they coordinate.
 
 ```ts
 mentors: [
   {
-    id: "nume-prenume",                          // obligatoriu, leagă mentorul de proiectele lui
-    name: "Nume Prenume",
-    emails: ["adresa@exemplu.ro"],               // una sau mai multe; toate devin linkuri mailto
-    github: "username",                          // opțional
-    avatar: "/img/mentori/nume-prenume.jpg",     // opțional — fără el se afișează inițialele
-    bio: "O propoziție-două despre ce face.",    // opțional
+    id: "first-last",                            // required, links the mentor to their projects
+    name: "First Last",
+    emails: ["address@example.org"],             // one or more; each becomes a mailto link
+    github: "username",                          // optional
+    avatar: "/img/mentors/first-last.jpg",       // optional — without it, initials are shown
+    bio: "A sentence or two about what they do.", // optional
   },
 ],
 ```
 
-`id` este cheia care leagă mentorul de proiecte — trebuie să fie unic în cadrul ediției și să
-apară identic în `mentors` din fiecare proiect.
+`id` is the key that links a mentor to their projects — it must be unique within the edition
+and appear exactly the same in each project's `mentors` list.
 
-**Pozele** se pun în [`public/img/mentori/`](public/img/mentori) și se referă cu calea
-`/img/mentori/<fisier>`. Recomandat: pătrate, minim 200×200px, JPG sau PNG.
+**Photos** go in [`public/img/mentors/`](public/img/mentors) and are referenced as
+`/img/mentors/<file>`. Square, at least 200×200px, JPG or PNG.
 
-Mentorii ediției de toamnă 2026 au momentan avatare generate (fișierele `.svg` din acel
-folder). Ca să pui pozele reale, copiezi imaginea în folder și schimbi extensia din `avatar`:
+The Fall 2026 mentors currently use generated avatars (the `.svg` files in that folder). To
+use real photos, copy the image into the folder and change the extension in `avatar`:
 
 ```ts
-avatar: "/img/mentori/razvan-deaconescu.jpg",   // în loc de .svg
+avatar: "/img/mentors/razvan-deaconescu.jpg",   // instead of .svg
 ```
 
-Dacă fișierul din `avatar` lipsește sau nu se încarcă, cardul afișează automat inițialele
-mentorului pe un fundal în degrade — nu rămâne nicio imagine ruptă.
+If the file in `avatar` is missing or fails to load, the card falls back to the mentor's
+initials — no broken image is ever shown.
 
-**Dacă `mentors` este o listă goală sau lipsește:**
-- pentru **ediția curentă** secțiunea apare cu mesajul „Mentorii se anunță în curând”;
-- pentru **edițiile trecute** secțiunea nu apare deloc.
+**If `mentors` is empty or missing:**
+- on the **current edition** the section shows “Mentors announced soon”;
+- on **past editions** the section is not rendered at all.
 
-### 3b. Adaugi proiectele mentorilor
+### 4. Add the mentors' projects
 
-Proiectele stau într-un fișier separat per ediție, ca să nu se umfle `editions.ts` —
-vezi [`src/data/projects-2026-toamna.ts`](src/data/projects-2026-toamna.ts). Îl imporți în
-`editions.ts` și îl pui pe câmpul `projects` al ediției.
+Projects live in a separate file per edition, so `editions.ts` stays readable — see
+[`src/data/projects-2026-fall.ts`](src/data/projects-2026-fall.ts). Import it in `editions.ts`
+and assign it to the edition's `projects` field.
 
 ```ts
 {
-  name: "rencfs",                                       // devine link către `url`
+  name: "rencfs",                                       // becomes a link to `url`
   url: "https://github.com/xoriors/rencfs",
-  mentors: ["radu-marias"],                             // unul sau mai mulți, după `id`
+  mentors: ["radu-marias"],                             // one or more, by `id`
 
-  // Câmpuri opționale, păstrate în date dar neafișate în dialog:
-  feature: "Ce anume se lucrează la proiect.",
+  // Optional fields, kept in the data but not shown in the dialog:
+  feature: "What is worked on during the edition.",
   startingPoint: "https://github.com/xoriors/rencfs/issues/236",
   channel: "https://discord.gg/xxxxxxx",
-  channelLabel: "Discord, alege CDL pentru acces la canal",
-  slots: "1–2 locuri",
+  channelLabel: "Discord, pick CDL to access the channel",
+  slots: "1–2 seats",
 }
 ```
 
-Dialogul mentorului afișează **doar numele proiectelor**, fiecare link către `url`. Un proiect
-cu mai multe teme se scrie ca intrări separate cu același `name` și `url` (ex. `rencfs` are
-trei), dar apare o singură dată în listă — dedublarea se face după `name` + `url`.
+The mentor dialog shows **only the project names**, each linking to `url`. A project with
+several tracks is written as separate entries sharing the same `name` and `url` (`rencfs` has
+three), but appears once in the list — entries are deduplicated by `name` + `url`.
 
-Un proiect cu mai mulți mentori se pune o singură dată, cu toate id-urile în `mentors` — apare
-în dialogul fiecăruia dintre ei.
+A project with several mentors is written once, with every id in `mentors` — it then shows up
+in each of their dialogs.
 
-Doar `name` și `mentors` sunt obligatorii. Numărul de proiecte afișat pe cardul mentorului se
-calculează automat, după dedublare.
+Only `name` and `mentors` are required. The project count on a mentor's card is computed
+automatically, after deduplication.
 
-### 4. Publici lista de proiecte
+### 5. Publish the project list
 
-Lista de proiecte open source dintre care își aleg participanții este un spreadsheet extern.
-Butonul **„Vezi lista de proiecte"** apare în hero-ul primei pagini și al paginii de ediție,
-**doar pentru ediția curentă** — edițiile trecute nu îl arată deloc.
+The list of open source projects participants choose from is an external spreadsheet. The
+**“Project list”** button appears in the header of both the home page and the edition page,
+**for the current edition only** — past editions never show it.
 
 ```ts
 projectsUrl: "https://docs.google.com/spreadsheets/d/xxxxxxxx",
-projectsPublicFrom: "2026-11-09",   // ziua în care lista devine publică
+projectsPublicFrom: "2026-11-09",   // the day the list goes public
 ```
 
-Comportamentul butonului:
-
-| Situație | Ce se vede |
+| Situation | What is shown |
 | --- | --- |
-| `projectsUrl` completat și data din `projectsPublicFrom` a trecut | buton activ, deschide spreadsheet-ul într-un tab nou |
-| `projectsPublicFrom` este în viitor, sau `projectsUrl` lipsește | buton inactiv, cu textul „Lista de proiecte · din 9 noiembrie 2026" |
-| `projectsUrl` completat, fără `projectsPublicFrom` | buton activ imediat |
-| ediția nu este cea curentă | butonul nu apare |
+| `projectsUrl` set and `projectsPublicFrom` has passed | active button, opens the spreadsheet in a new tab |
+| `projectsPublicFrom` is in the future, or `projectsUrl` is missing | inactive button reading “Project list · from 9 November 2026” |
+| `projectsUrl` set, no `projectsPublicFrom` | active immediately |
+| not the current edition | the button is not rendered |
 
-Pune `projectsPublicFrom` cu câteva zile înainte de primul hackathon, ca participanții să aibă
-timp să se uite peste proiecte. Nu trebuie să revii pe site în ziua respectivă — butonul se
-activează singur.
+Set `projectsPublicFrom` a few days before the first hackathon, so participants have time to
+look through the projects. You do not need to come back on the day — the button activates on
+its own.
 
-Spreadsheet-ul trebuie să fie partajat cu „oricine are linkul, poate vedea”.
+The spreadsheet must be shared as “anyone with the link can view”.
 
-### 5. Adaugi sponsorii (când îi ai)
+### 6. Add the sponsors (once you have them)
 
-Secțiunea de sponsori apare **după** cea de mentori și **numai dacă ediția are sponsori** —
-până atunci nu se vede nimic pe pagină, nu e nevoie de niciun placeholder.
+The sponsors section is rendered **after** the mentors and **only if the edition has
+sponsors** — until then nothing shows on the page, no placeholder needed.
 
 ```ts
 sponsors: [
-  { name: "Nume Companie", tier: "principal",   url: "https://...", logo: "/img/sponsori/companie.svg" },
-  { name: "Alt Partener",  tier: "partener",    url: "https://..." },
-  { name: "Susținător",    tier: "sustinator" },
+  { name: "Company Name", tier: "main",      url: "https://...", logo: "/img/sponsors/company.svg" },
+  { name: "Other Partner", tier: "partner",  url: "https://..." },
+  { name: "Supporter",     tier: "supporter" },
 ],
 ```
 
-Nivelurile (`tier`) grupează sponsorii și le dau dimensiunea logo-ului:
-
-| `tier` | Titlu afișat | Așezare |
+| `tier` | Heading | Layout |
 | --- | --- | --- |
-| `"principal"` | Sponsor principal | logo-uri mari, 2 pe rând |
-| `"partener"` | Partener | logo-uri medii, până la 4 pe rând |
-| `"sustinator"` | Susținător | logo-uri medii, până la 4 pe rând |
+| `"main"` | Main sponsor | large logos, 2 per row |
+| `"partner"` | Partner | medium logos, up to 4 per row |
+| `"supporter"` | Supporter | medium logos, up to 4 per row |
 
-Dacă omiți `tier`, sponsorul e tratat ca `"partener"`. Dacă omiți `logo`, se afișează numele
-ca text. Logo-urile se pun în [`public/img/sponsori/`](public/img/sponsori) — de preferat SVG
-sau PNG transparent, deschis la culoare (fundalul site-ului e întunecat).
+Omitting `tier` treats the sponsor as a `"partner"`. Omitting `logo` shows the name as text.
+Logos go in [`public/img/sponsors/`](public/img/sponsors) — SVG or transparent PNG, light
+coloured, since the site background is dark.
 
-### 6. Deschizi și închizi înscrierile
+### 7. Opening and closing applications
 
-Bannerul **„Înscrieri deschise"** de pe prima pagină, butonul din hero și bannerul de pe pagina
-ediției apar toate pe baza acelorași două câmpuri:
+The **“Applications open”** line on the home page, the header button and the banner on the
+edition page all derive from the same two fields:
 
 ```ts
 applyUrl: "https://forms.gle/xxxxxxxx",
 applyDeadline: "2026-10-05",
 ```
 
-Ca să le afișezi, e suficient să pui `applyUrl` pe ediție. Ca să le ascunzi, ai două variante:
-lași termenul din `applyDeadline` să treacă — dispar singure la sfârșitul acelei zile — sau
-ștergi `applyUrl`.
+Setting `applyUrl` is enough to show them. To hide them, either let `applyDeadline` pass —
+they disappear at the end of that day — or remove `applyUrl`.
 
-Înscrierile se consideră deschise **doar pentru ediția curentă** (prima din listă). O ediție
-veche căreia i-a rămas `applyUrl` în date nu mai anunță înscrieri, oricât de vechi ar fi
-formularul.
+Applications count as open **for the current edition only** (the first in the list). An old
+edition that still has an `applyUrl` in its data never advertises open applications.
 
 ---
 
-## Edițiile istorice
+## Historical editions
 
-Edițiile 2013–2020 au rămas pe vechiul site Jekyll și sunt listate ca linkuri externe în
-`legacyEditions`, tot din `src/data/editions.ts`. Dacă vrei să migrezi vreuna, o muți în
-lista `editions` cu structura de mai sus.
+The 2013–2020 editions remain on the old Jekyll site and are listed as external links in
+`legacyEditions`, also in `src/data/editions.ts`. To migrate one, move it into the `editions`
+list using the structure above.
 
-## Deploy pe Vercel
+## Deploying on Vercel
 
-1. Import repo în Vercel — framework preset **Vite**, build `npm run build`, output `dist`.
-2. [`vercel.json`](vercel.json) conține rewrite-ul către `index.html`, necesar pentru rutele
-   client-side (fără el, `/2026/toamna` dă 404 la refresh).
-3. Pentru domeniu: `cdl.rosedu.org` → CNAME către Vercel, în locul GitHub Pages.
+1. Import the repo in Vercel — framework preset **Vite**, build `npm run build`, output `dist`.
+2. [`vercel.json`](vercel.json) contains the rewrite to `index.html`, required for client-side
+   routing (without it, `/2026/fall` 404s on refresh).
+3. For the domain: point `cdl.rosedu.org` at Vercel with a CNAME, replacing GitHub Pages.

@@ -15,8 +15,8 @@ function ScrollManager() {
       window.scrollTo({ top: 0 });
       return;
     }
-    // dupa navigare, sectiunea tinta poate sa nu fie inca montata:
-    // incercam cateva cadre pana cand o gasim
+    // after navigating, the target section may not be mounted yet:
+    // retry for a few frames until it is
     let tries = 0;
     let id = 0;
     const attempt = () => {
@@ -37,10 +37,11 @@ export default function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/editii" element={<EditionsPage />} />
+          <Route path="/editions" element={<EditionsPage />} />
+          <Route path="/editii" element={<Navigate to="/editions" replace />} />
           <Route path="/:year/:season" element={<EditionPage />} />
           <Route path="/:year" element={<EditionPage />} />
-          <Route path="/editions/*" element={<Navigate to="/editii" replace />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

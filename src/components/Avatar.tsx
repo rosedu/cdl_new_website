@@ -9,8 +9,8 @@ const initials = (name: string) =>
     .join("");
 
 const sizes = {
-  md: "h-16 w-16 text-lg",
-  lg: "h-20 w-20 text-xl",
+  md: "h-12 w-12 text-sm",
+  lg: "h-16 w-16 text-base",
 };
 
 export default function Avatar({ mentor, size = "md" }: { mentor: Mentor; size?: keyof typeof sizes }) {
@@ -24,14 +24,14 @@ export default function Avatar({ mentor, size = "md" }: { mentor: Mentor; size?:
         alt={mentor.name}
         loading="lazy"
         onError={() => setFailed(true)}
-        className={`${cls} object-cover ring-1 ring-white/15`}
+        className={`${cls} object-cover ring-1 ring-white/10`}
       />
     );
   }
 
   return (
     <span
-      className={`${cls} grid place-items-center bg-gradient-to-br from-[var(--color-accent)]/70 to-[var(--color-accent-2)]/70 font-semibold text-black`}
+      className={`${cls} grid place-items-center bg-white/[0.06] font-medium text-slate-300 ring-1 ring-white/10`}
     >
       {initials(mentor.name)}
     </span>

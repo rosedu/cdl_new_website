@@ -7,32 +7,32 @@ import { currentEdition, editionPath, editions, isApplyOpen, legacyEditions } fr
 
 const pillars = [
   {
-    title: "Ateliere practice",
-    body: "Git, GitHub, Markdown, Docker, automatizări și bune practici de inginerie software. Fiecare atelier are exerciții practice, nu doar slide-uri.",
-    tag: "prima parte",
+    tag: "first half",
+    title: "Hands-on workshops",
+    body: "Git, GitHub, Markdown, Docker, automation and software engineering best practices. Every workshop comes with practical exercises, not just slides.",
   },
   {
-    title: "Hackathoane pe proiecte reale",
-    body: "Îți alegi un proiect open source dintr-o listă și lucrezi la el alături de un mentor, online și la hackathoanele din a doua parte a cursului.",
-    tag: "a doua parte",
+    tag: "second half",
+    title: "Hackathons on real projects",
+    body: "You pick an open source project from a list and work on it with a mentor, online and during the hackathons in the second half of the course.",
   },
   {
-    title: "Contribuții publice",
-    body: "La final ai pull request-uri acceptate, code review-uri făcute și documentație scrisă — tot ce înseamnă dezvoltare software în mediul real.",
-    tag: "rezultat",
+    tag: "outcome",
+    title: "Public contributions",
+    body: "By the end you have merged pull requests, reviews you have given and documentation you have written — what software development actually looks like.",
   },
   {
-    title: "Comunitate",
-    body: "Instructori și mentori din industrie și din comunitatea ROSEdu. Conținutul rămâne public, în spiritul open source, pentru oricine.",
     tag: "ROSEdu",
+    title: "Community",
+    body: "Instructors and mentors from the industry and from the ROSEdu community. The course content stays public, in the spirit of open source.",
   },
 ];
 
 const stats = [
-  { value: "2013", label: "prima ediție" },
-  { value: `${editions.length + legacyEditions.length}`, label: "ediții organizate" },
-  { value: "9–11", label: "ședințe / ediție" },
-  { value: "0 lei", label: "taxa de participare" },
+  { value: "2013", label: "first edition" },
+  { value: `${editions.length + legacyEditions.length}`, label: "editions held" },
+  { value: "9–11", label: "sessions per edition" },
+  { value: "free", label: "for participants" },
 ];
 
 export default function Home() {
@@ -40,67 +40,63 @@ export default function Home() {
 
   return (
     <>
-      {/* hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 grid-bg" />
-        <div className="blob pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-[var(--color-accent)]/25 blur-[100px]" />
-        <div className="blob pointer-events-none absolute -right-20 top-40 h-80 w-80 rounded-full bg-[var(--color-accent-2)]/20 blur-[100px]" style={{ animationDelay: "-6s" }} />
 
-        <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-20 sm:pt-28">
+        <div className="relative mx-auto max-w-5xl px-5 pb-20 pt-16 sm:pt-24">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs text-slate-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-              {applyOpen ? `Înscrieri deschise · ${currentEdition.label}` : `Ediția curentă · ${currentEdition.label}`}
-            </span>
-          </Reveal>
-
-          <Reveal delay={80}>
-            <h1 className="mt-6 max-w-4xl text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-7xl">
-              Curs de <span className="shimmer">Dezvoltare Liberă</span>
-            </h1>
-          </Reveal>
-
-          <Reveal delay={160}>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
-              Un curs/laborator alternativ pentru oricine vrea să facă prima sa contribuție într-un proiect open
-              source. Fără taxă, fără examene — doar cod, mentori și commit-uri publice.
+            <p className="font-mono text-xs text-slate-500">
+              {applyOpen ? `Applications open · ${currentEdition.label}` : `Current edition · ${currentEdition.label}`}
             </p>
           </Reveal>
 
-          <Reveal delay={240}>
-            <div className="mt-9 flex flex-wrap gap-3">
+          <Reveal delay={60}>
+            <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl">
+              Free Software Development Course
+            </h1>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-400">
+              An alternative course and lab for anyone who wants to make their first contribution to an open source
+              project. No fee, no exams — just code, mentors and public commits.
+            </p>
+          </Reveal>
+
+          <Reveal delay={180}>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               {applyOpen && (
                 <a
                   href={currentEdition.applyUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-xl bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] px-6 py-3.5 text-sm font-semibold text-black shadow-lg shadow-[var(--color-accent)]/25 transition hover:brightness-110"
+                  className="rounded-md bg-slate-100 px-5 py-3 text-sm font-medium text-slate-900 transition-colors hover:bg-white"
                 >
-                  Înscrie-te la {currentEdition.label}
+                  Apply for {currentEdition.label}
                 </a>
               )}
               <Link
                 to={editionPath(currentEdition)}
-                className="rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                className="rounded-md border border-white/15 px-5 py-3 text-sm font-medium text-slate-200 transition-colors hover:border-white/30 hover:text-white"
               >
-                Vezi ediția curentă
+                Current edition
               </Link>
               <ProjectsButton edition={currentEdition} isCurrent />
               <Link
-                to="/editii"
-                className="rounded-xl px-6 py-3.5 text-sm font-semibold text-slate-300 transition hover:text-white"
+                to="/editions"
+                className="px-2 py-3 text-sm text-slate-400 transition-colors hover:text-white"
               >
-                Toate edițiile →
+                All editions →
               </Link>
             </div>
           </Reveal>
 
-          <Reveal delay={320}>
-            <dl className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-4">
+          <Reveal delay={240}>
+            <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/[0.08] pt-8 sm:grid-cols-4">
               {stats.map((s) => (
-                <div key={s.label} className="bg-[var(--color-ink)]/90 px-5 py-6">
-                  <dt className="text-2xl font-bold text-white sm:text-3xl">{s.value}</dt>
-                  <dd className="mt-1 text-xs uppercase tracking-wider text-slate-500">{s.label}</dd>
+                <div key={s.label}>
+                  <dt className="text-2xl font-semibold text-white">{s.value}</dt>
+                  <dd className="mt-1 text-xs uppercase tracking-wider text-slate-600">{s.label}</dd>
                 </div>
               ))}
             </dl>
@@ -108,95 +104,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* despre */}
-      <section id="despre" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20">
+      <section id="about" className="mx-auto max-w-5xl scroll-mt-24 px-5 py-16">
         <Reveal>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-accent-2)]">Despre CDL</p>
-          <h2 className="mt-3 max-w-2xl text-3xl font-bold text-white sm:text-4xl">
-            De la „n-am contribuit niciodată” la pull request acceptat.
-          </h2>
-          <p className="mt-4 max-w-2xl text-slate-400">
-            CDL îi ajută pe elevi, studenți și pe oricine are un bagaj inițial de cunoștințe IT&amp;C să înțeleagă cum
-            arată dezvoltarea software în mediul real. Ai nevoie doar de un cont GitHub cu cel puțin două proiecte, în
-            două limbaje diferite.
+          <h2 className="text-2xl font-semibold text-white">About CDL</h2>
+          <p className="mt-4 max-w-2xl leading-relaxed text-slate-400">
+            CDL helps pupils, students and anyone with some background in computing understand what software
+            development looks like in the real world. All you need is a GitHub account with at least two projects, in
+            two different programming languages.
           </p>
         </Reveal>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
           {pillars.map((p, i) => (
-            <Reveal key={p.title} delay={i * 90}>
-              <article className="glass h-full p-6 transition hover:border-white/20 hover:bg-white/[0.06]">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-slate-500">{p.tag}</span>
-                <h3 className="mt-2 text-xl font-semibold text-white">{p.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-400">{p.body}</p>
+            <Reveal key={p.title} delay={i * 60}>
+              <article>
+                <p className="font-mono text-[11px] uppercase tracking-wider text-slate-600">{p.tag}</p>
+                <h3 className="mt-2 text-lg font-medium text-white">{p.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-400">{p.body}</p>
               </article>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* program */}
-      <section id="program" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20">
+      <section id="program" className="mx-auto max-w-5xl scroll-mt-24 px-5 py-16">
         <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-accent-2)]">Program</p>
-              <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">{currentEdition.label}</h2>
-              <p className="mt-2 text-slate-400">{currentEdition.period}</p>
+              <h2 className="text-2xl font-semibold text-white">Program</h2>
+              <p className="mt-2 text-sm text-slate-500">
+                {currentEdition.label} · {currentEdition.period}
+              </p>
             </div>
-            <Link to={editionPath(currentEdition)} className="text-sm font-medium text-white hover:text-[var(--color-accent-2)]">
-              Detalii complete →
+            <Link
+              to={editionPath(currentEdition)}
+              className="text-sm text-slate-400 transition-colors hover:text-white"
+            >
+              Full details →
             </Link>
           </div>
         </Reveal>
-        <div className="mt-10">
+        <div className="mt-8">
           <ProgramList program={currentEdition.program} />
         </div>
       </section>
 
-      {/* editii */}
-      <section className="mx-auto max-w-6xl px-5 py-20">
+      <section className="mx-auto max-w-5xl px-5 py-16">
         <Reveal>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-accent-2)]">Arhivă</p>
-          <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Edițiile recente</h2>
+          <h2 className="text-2xl font-semibold text-white">Recent editions</h2>
         </Reveal>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {editions.map((e, i) => (
-            <Reveal key={e.id} delay={i * 70}>
-              <EditionCard edition={e} index={i} />
+            <Reveal key={e.id} delay={Math.min(i * 50, 250)} className="h-full">
+              <EditionCard edition={e} />
             </Reveal>
           ))}
         </div>
         <Reveal>
-          <div className="mt-8 text-center">
-            <Link to="/editii" className="text-sm font-medium text-slate-300 hover:text-white">
-              Inclusiv edițiile 2013–2020 →
+          <p className="mt-8">
+            <Link to="/editions" className="text-sm text-slate-400 transition-colors hover:text-white">
+              Including the 2013–2020 editions →
             </Link>
-          </div>
+          </p>
         </Reveal>
       </section>
 
-      {/* cta */}
       {applyOpen && (
-        <section className="mx-auto max-w-6xl px-5 py-10">
+        <section className="mx-auto max-w-5xl px-5 pb-10">
           <Reveal>
-            <div className="glass relative overflow-hidden p-10 text-center sm:p-14">
-              <div className="blob pointer-events-none absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-[var(--color-accent)]/30 blur-[90px]" />
-              <div className="relative">
-                <h2 className="text-3xl font-bold text-white sm:text-4xl">Alătură-te supereroilor.</h2>
-                <p className="mx-auto mt-4 max-w-xl text-slate-400">
-                  Înscrierile pentru {currentEdition.label} sunt deschise. Participarea este gratuită, în limita
-                  locurilor disponibile.
+            <div className="glass flex flex-col gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-white">Applications for {currentEdition.label} are open</h2>
+                <p className="mt-2 text-sm text-slate-400">
+                  Taking part is free, subject to the number of places available.
                 </p>
-                <a
-                  href={currentEdition.applyUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-8 inline-block rounded-xl bg-white px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-slate-200"
-                >
-                  Completează formularul
-                </a>
               </div>
+              <a
+                href={currentEdition.applyUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="shrink-0 rounded-md bg-slate-100 px-5 py-3 text-center text-sm font-medium text-slate-900 transition-colors hover:bg-white"
+              >
+                Open the form
+              </a>
             </div>
           </Reveal>
         </section>

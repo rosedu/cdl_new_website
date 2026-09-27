@@ -4,18 +4,18 @@ import Avatar from "./Avatar";
 
 function ProjectItem({ project }: { project: Project }) {
   return (
-    <li className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition hover:border-white/20 hover:bg-white/[0.06]">
+    <li className="rounded-md border border-white/[0.08] px-4 py-3 transition-colors hover:border-white/20">
       {project.url ? (
         <a
           href={project.url}
           target="_blank"
           rel="noreferrer"
-          className="font-medium text-white underline decoration-white/25 underline-offset-4 transition hover:text-[var(--color-accent-2)] hover:decoration-[var(--color-accent-2)]"
+          className="text-slate-200 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white hover:decoration-white/50"
         >
           {project.name} <span aria-hidden>↗</span>
         </a>
       ) : (
-        <span className="font-medium text-white">{project.name}</span>
+        <span className="text-slate-200">{project.name}</span>
       )}
     </li>
   );
@@ -48,7 +48,7 @@ export default function MentorDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/70 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-6"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -59,22 +59,21 @@ export default function MentorDialog({
         aria-modal="true"
         aria-labelledby="mentor-dialog-title"
         tabIndex={-1}
-        className="glass relative flex max-h-[88dvh] w-full max-w-2xl flex-col rounded-b-none rounded-t-3xl bg-[var(--color-ink-2)]/95 outline-none sm:rounded-3xl"
+        className="glass relative flex max-h-[88dvh] w-full max-w-xl flex-col rounded-b-none rounded-t-2xl border-white/10 bg-[var(--color-ink-2)] outline-none sm:rounded-2xl"
       >
         <button
           onClick={onClose}
-          aria-label="Închide"
-          className="absolute right-4 top-4 z-10 grid h-9 w-9 cursor-pointer place-items-center rounded-full border border-white/10 bg-[var(--color-ink-2)]/80 text-slate-400 transition hover:bg-white/10 hover:text-white"
+          aria-label="Close"
+          className="absolute right-4 top-4 z-10 grid h-9 w-9 cursor-pointer place-items-center rounded-md border border-white/10 bg-[var(--color-ink-2)] text-slate-500 transition-colors hover:border-white/25 hover:text-white"
         >
           ✕
         </button>
 
-        <div className="relative shrink-0 overflow-hidden rounded-t-3xl border-b border-white/10 p-7 sm:p-8">
-          <div className="pointer-events-none absolute -left-10 -top-16 h-48 w-48 rounded-full bg-[var(--color-accent)]/25 blur-3xl" />
-          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
+        <div className="shrink-0 border-b border-white/[0.08] p-6 sm:p-7">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <Avatar mentor={mentor} size="lg" />
             <div className="min-w-0">
-              <h2 id="mentor-dialog-title" className="text-2xl font-bold text-white">
+              <h2 id="mentor-dialog-title" className="text-xl font-semibold text-white">
                 {mentor.name}
               </h2>
               <div className="mt-2 flex flex-col gap-1">
@@ -82,7 +81,7 @@ export default function MentorDialog({
                   <a
                     key={email}
                     href={`mailto:${email}`}
-                    className="w-fit font-mono text-sm text-[var(--color-accent-2)] transition hover:text-white"
+                    className="w-fit font-mono text-sm text-[var(--color-accent)] transition-colors hover:text-white"
                   >
                     {email}
                   </a>
@@ -92,7 +91,7 @@ export default function MentorDialog({
                     href={`https://github.com/${mentor.github}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-fit font-mono text-sm text-slate-400 transition hover:text-white"
+                    className="w-fit font-mono text-sm text-slate-500 transition-colors hover:text-white"
                   >
                     @{mentor.github} ↗
                   </a>
@@ -103,10 +102,10 @@ export default function MentorDialog({
           </div>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-7 sm:p-8">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
-            Proiecte coordonate
-            <span className="ml-2 rounded-full bg-white/5 px-2 py-0.5 text-xs text-slate-500">{projects.length}</span>
+        <div className="min-h-0 flex-1 overflow-y-auto p-6 sm:p-7">
+          <h3 className="font-mono text-xs uppercase tracking-wider text-slate-500">
+            Projects
+            <span className="ml-2 text-slate-600">{projects.length}</span>
           </h3>
 
           {projects.length ? (
@@ -116,7 +115,7 @@ export default function MentorDialog({
               ))}
             </ul>
           ) : (
-            <p className="mt-4 text-sm text-slate-500">Proiectele se anunță în curând.</p>
+            <p className="mt-4 text-sm text-slate-500">Projects announced soon.</p>
           )}
         </div>
       </div>

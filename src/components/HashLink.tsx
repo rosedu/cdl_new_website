@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import type { MouseEvent, ReactNode } from "react";
 
-/** Scroll catre o ancora. Intoarce false daca elementul nu exista (inca). */
+/** Scroll to an anchor. Returns false if the element does not exist (yet). */
 export function scrollToHash(hash: string) {
   const el = document.querySelector(hash);
   if (!el) return false;
@@ -10,9 +10,9 @@ export function scrollToHash(hash: string) {
 }
 
 /**
- * Link catre o ancora de pe alta pagina (ex. "/#program").
- * Daca suntem deja pe pagina tinta, face scroll direct — react-router nu
- * declanseaza nimic cand ruta si hash-ul raman aceleasi.
+ * Link to an anchor on another page (e.g. "/#program").
+ * If we are already on the target page it scrolls directly — react-router does
+ * not fire anything when both the route and the hash stay the same.
  */
 export default function HashLink({
   to,
