@@ -1,4 +1,4 @@
-import { projects2026Fall } from "./projects-2026-fall";
+import { projects2026Summer } from "./projects-2026-summer";
 
 export type Season = "spring" | "summer" | "fall" | "unibuc" | "etti" | "extended";
 
@@ -115,6 +115,31 @@ export const editions: Edition[] = [
     // projectsUrl: "https://docs.google.com/spreadsheets/d/...",
     projectsPublicFrom: "2026-11-09",
 
+    program: [
+      { date: "Saturday, 10 October 2026", time: "10:00-13:00", title: "Version control with Git", kind: W },
+      { date: "Saturday, 17 October 2026", time: "10:00-13:00", title: "Advanced Git and collaborative development with GitHub", kind: W },
+      { date: "Saturday, 24 October 2026", time: "10:00-13:00", title: "Documentation and the Markdown format", kind: W },
+      { date: "Saturday, 31 October 2026", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
+      { date: "Sunday, 8 November 2026", time: "10:00-13:00", title: "Automation and CI/CD with GitHub Actions", kind: W },
+      { date: "Saturday, 14 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 21 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 28 November 2026", time: "—", title: "Break", kind: B },
+      { date: "Saturday, 5 December 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
+      { date: "Saturday, 12 December 2026", time: "17:00-22:00", title: "Final presentations. Graduation", kind: F },
+    ],
+  },
+  {
+    id: "2026-summer",
+    year: 2026,
+    season: "summer",
+    label: "Summer 2026",
+    period: "23 June - 11 July 2026",
+    tagline: "Nine intensive sessions, three weeks, one open source project.",
+    description:
+      "The intensive summer edition: Tuesdays, Thursdays and Saturdays over three weeks. Five technical workshops, followed by four hackathons working on a real open source project alongside a mentor.",
+    // Applications closed on 20 June 2026.
+    location: "Bucharest, in person",
+
     mentors: [
       {
         id: "razvan-deaconescu",
@@ -143,32 +168,8 @@ export const editions: Edition[] = [
         avatar: "/img/mentors/livia-zaharia.svg",
       },
     ],
-    projects: projects2026Fall,
+    projects: projects2026Summer,
 
-    program: [
-      { date: "Saturday, 10 October 2026", time: "10:00-13:00", title: "Version control with Git", kind: W },
-      { date: "Saturday, 17 October 2026", time: "10:00-13:00", title: "Advanced Git and collaborative development with GitHub", kind: W },
-      { date: "Saturday, 24 October 2026", time: "10:00-13:00", title: "Documentation and the Markdown format", kind: W },
-      { date: "Saturday, 31 October 2026", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
-      { date: "Sunday, 8 November 2026", time: "10:00-13:00", title: "Automation and CI/CD with GitHub Actions", kind: W },
-      { date: "Saturday, 14 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
-      { date: "Saturday, 21 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
-      { date: "Saturday, 28 November 2026", time: "—", title: "Break", kind: B },
-      { date: "Saturday, 5 December 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
-      { date: "Saturday, 12 December 2026", time: "17:00-22:00", title: "Final presentations. Graduation", kind: F },
-    ],
-  },
-  {
-    id: "2026-summer",
-    year: 2026,
-    season: "summer",
-    label: "Summer 2026",
-    period: "23 June - 11 July 2026",
-    tagline: "Nine intensive sessions, three weeks, one open source project.",
-    description:
-      "The intensive summer edition: Tuesdays, Thursdays and Saturdays over three weeks. Five technical workshops, followed by four hackathons working on a real open source project alongside a mentor.",
-    // Applications closed on 20 June 2026.
-    location: "Bucharest, in person",
     program: [
       { date: "Tuesday, 23 June 2026", time: "09:00-12:00", title: "Version control with Git", kind: W },
       { date: "Thursday, 25 June 2026", time: "09:00-12:00", title: "Advanced Git. Collaborative development with GitHub", kind: W },
@@ -302,6 +303,26 @@ export const editionPath = (e: Edition) => (e.season ? `/${e.year}/${e.season}` 
 
 export const findEdition = (year: string, season?: string) =>
   editions.find((e) => String(e.year) === year && (season ? e.season === season : !e.season));
+
+/** Sessions that actually take place — breaks are scheduled gaps, not sessions. */
+export const sessionCount = (edition: Edition) =>
+  edition.program.filter((s) => s.kind !== "break").length;
+
+/**
+ * The day the edition ends, parsed from the last entry in the program
+ * ("Saturday, 12 December 2026" -> 12 December 2026).
+ */
+export const editionEnd = (edition: Edition) => {
+  const last = edition.program.at(-1)?.date ?? "";
+  const parsed = new Date(last.replace(/^[^,]+,\s*/, ""));
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+/** True while the edition has not finished yet. */
+export const isUpcoming = (edition: Edition) => {
+  const end = editionEnd(edition);
+  return !end || end >= new Date();
+};
 
 /** The current edition: the most recent one (the list is ordered newest first). */
 export const currentEdition = editions[0];

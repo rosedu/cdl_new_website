@@ -6,7 +6,16 @@ import { scrollToHash } from "../components/HashLink";
 import Mentors from "../components/Mentors";
 import ProjectsButton from "../components/ProjectsButton";
 import Sponsors from "../components/Sponsors";
-import { currentEdition, editionPath, editions, findEdition, isApplyOpen, legacySeasonSlugs } from "../data/editions";
+import {
+  currentEdition,
+  editionPath,
+  editions,
+  findEdition,
+  isApplyOpen,
+  isUpcoming,
+  legacySeasonSlugs,
+  sessionCount,
+} from "../data/editions";
 import NotFound from "./NotFound";
 
 export default function EditionPage() {
@@ -36,7 +45,7 @@ export default function EditionPage() {
 
   const anchors = [
     { href: "#program", label: "Program" },
-    ...(edition.mentors?.length || isCurrent ? [{ href: "#mentors", label: "Mentors" }] : []),
+    { href: "#mentors", label: "Mentors" },
     ...(edition.sponsors?.length ? [{ href: "#sponsors", label: "Sponsors" }] : []),
   ];
 
@@ -57,7 +66,7 @@ export default function EditionPage() {
 
           <Reveal delay={80}>
             <p className="mt-6 font-mono text-xs text-slate-500">
-              {edition.program.length} sessions · {workshops} workshops · {hackathons} hackathons
+              {sessionCount(edition)} sessions · {workshops} workshops · {hackathons} hackathons
               {edition.location && ` · ${edition.location}`}
             </p>
           </Reveal>
@@ -127,7 +136,7 @@ export default function EditionPage() {
         </div>
       </section>
 
-      <Mentors edition={edition} upcoming={isCurrent} />
+      <Mentors edition={edition} upcoming={isUpcoming(edition)} />
 
       <Sponsors sponsors={edition.sponsors} />
 

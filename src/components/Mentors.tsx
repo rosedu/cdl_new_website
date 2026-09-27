@@ -27,8 +27,6 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
   const mentors = edition.mentors ?? [];
   const active = mentors.find((m) => m.id === openId);
 
-  if (!mentors.length && !upcoming) return null;
-
   return (
     <section id="mentors" className="mx-auto max-w-5xl scroll-mt-24 px-5 py-10">
       <Reveal>
@@ -53,21 +51,27 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
         </div>
       ) : (
         <Reveal>
-          <div className="glass mt-6 flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-6 flex flex-col gap-3 rounded-xl border border-dashed border-slate-300 p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-medium text-slate-900">Mentors announced soon</p>
+              <p className="font-medium text-slate-900">
+                {upcoming ? "Mentors announced soon" : "Mentors not recorded"}
+              </p>
               <p className="mt-1 text-sm text-slate-500">
-                The mentor list for this edition will be published before the first session.
+                {upcoming
+                  ? "The mentor list for this edition will be published before the first session."
+                  : "The mentor list for this edition was not recorded on the site."}
               </p>
             </div>
-            <a
-              href="https://github.com/rosedu"
-              target="_blank"
-              rel="noreferrer"
-              className="shrink-0 rounded-md border border-slate-300 px-4 py-2.5 text-sm text-slate-800 transition-colors hover:border-slate-400 hover:text-slate-900"
-            >
-              Want to mentor? →
-            </a>
+            {upcoming && (
+              <a
+                href="https://github.com/rosedu"
+                target="_blank"
+                rel="noreferrer"
+                className="shrink-0 rounded-md border border-slate-300 px-4 py-2.5 text-sm text-slate-800 transition-colors hover:border-slate-400 hover:text-slate-900"
+              >
+                Want to mentor? →
+              </a>
+            )}
           </div>
         </Reveal>
       )}

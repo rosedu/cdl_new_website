@@ -31,7 +31,7 @@ const pillars = [
 const stats = [
   { value: "2013", label: "first edition" },
   { value: `${editions.length + legacyEditions.length}`, label: "editions held" },
-  { value: "9–11", label: "sessions per edition" },
+  { value: "9", label: "sessions per edition" },
   { value: "free", label: "for participants" },
 ];
 

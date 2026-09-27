@@ -1,10 +1,10 @@
 import type { Project } from "./editions";
 
 /**
- * The open source projects of the Fall 2026 edition.
+ * The open source projects of the Summer 2026 edition.
  * `mentors` holds the ids from the edition's mentor list.
  */
-export const projects2026Fall: Project[] = [
+export const projects2026Summer: Project[] = [
   {
     name: "Unikraft",
     url: "https://github.com/unikraft/catalog-core",

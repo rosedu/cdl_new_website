@@ -82,7 +82,7 @@ Each session has a `kind` that sets its colour and label in the timeline:
 | `"workshop"` | Workshop | the technical sessions in the first half |
 | `"hackathon"` | Hackathon | the sessions spent working on a project |
 | `"final"` | Final | final presentations and graduation |
-| `"break"` | Break | free weekends (shown dimmed) |
+| `"break"` | Break | free weekends (shown dimmed, and not counted as sessions) |
 
 ```ts
 program: [
@@ -96,7 +96,9 @@ program: [
 `W`, `H`, `F` and `B` are shorthands defined at the top of the file (`workshop`, `hackathon`,
 `final`, `break`). Writing `kind: "workshop"` directly works just as well.
 
-The workshop and hackathon counts shown on the cards are computed from this list.
+The session, workshop and hackathon counts on the cards are computed from this list. Entries
+marked `"break"` are scheduled gaps, so they appear in the timeline but are left out of the
+session count — an eleven-row program with two breaks reads as nine sessions.
 
 ### 3. Add the mentors
 
@@ -132,14 +134,19 @@ avatar: "/img/mentors/razvan-deaconescu.jpg",   // instead of .svg
 If the file in `avatar` is missing or fails to load, the card falls back to the mentor's
 initials — no broken image is ever shown.
 
-**If `mentors` is empty or missing:**
-- on the **current edition** the section shows “Mentors announced soon”;
-- on **past editions** the section is not rendered at all.
+**If `mentors` is empty or missing** the section still renders, with a placeholder whose
+wording depends on whether the edition has finished — the end date is read from the last entry
+in `program`:
+
+- an edition that has **not finished yet** shows “Mentors announced soon”, plus a link for
+  people who want to mentor;
+- a **finished** edition shows “Mentors not recorded”, since its mentors are never going to be
+  announced.
 
 ### 4. Add the mentors' projects
 
 Projects live in a separate file per edition, so `editions.ts` stays readable — see
-[`src/data/projects-2026-fall.ts`](src/data/projects-2026-fall.ts). Import it in `editions.ts`
+[`src/data/projects-2026-summer.ts`](src/data/projects-2026-summer.ts). Import it in `editions.ts`
 and assign it to the edition's `projects` field.
 
 ```ts
