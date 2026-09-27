@@ -14,9 +14,9 @@ export default function EditionPage() {
   const edition = year ? findEdition(year, season) : undefined;
 
   useEffect(() => {
-    if (edition) document.title = `CDL ${edition.label} — Free Software Development Course`;
+    if (edition) document.title = `CDL ${edition.label} — Community Development Lab`;
     return () => {
-      document.title = "CDL — Free Software Development Course";
+      document.title = "CDL — Community Development Lab";
     };
   }, [edition]);
 
@@ -47,12 +47,12 @@ export default function EditionPage() {
 
         <div className="relative mx-auto max-w-5xl px-5 pb-12 pt-14">
           <Reveal>
-            <Link to="/editions" className="font-mono text-xs text-slate-600 transition-colors hover:text-white">
+            <Link to="/editions" className="font-mono text-xs text-slate-500 transition-colors hover:text-slate-900">
               ← all editions
             </Link>
-            <h1 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">CDL {edition.label}</h1>
+            <h1 className="mt-5 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">CDL {edition.label}</h1>
             <p className="mt-2 font-mono text-sm text-slate-500">{edition.period}</p>
-            <p className="mt-5 max-w-2xl text-lg text-slate-400">{edition.tagline}</p>
+            <p className="mt-5 max-w-2xl text-lg text-slate-600">{edition.tagline}</p>
           </Reveal>
 
           <Reveal delay={80}>
@@ -73,7 +73,7 @@ export default function EditionPage() {
                     e.preventDefault();
                     scrollToHash(a.href);
                   }}
-                  className="cursor-pointer rounded-md border border-white/10 px-4 py-2.5 text-sm text-slate-400 transition-colors hover:border-white/25 hover:text-white"
+                  className="cursor-pointer rounded-md border border-slate-200 px-4 py-2.5 text-sm text-slate-600 transition-colors hover:border-slate-400 hover:text-slate-900"
                 >
                   {a.label}
                 </a>
@@ -85,7 +85,7 @@ export default function EditionPage() {
             <Reveal delay={160}>
               <div className="glass mt-8 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="font-medium text-white">Applications are open</p>
+                  <p className="font-medium text-slate-900">Applications are open</p>
                   {edition.applyDeadline && (
                     <p className="mt-1 text-sm text-slate-500">
                       Deadline:{" "}
@@ -101,7 +101,7 @@ export default function EditionPage() {
                   href={edition.applyUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="shrink-0 rounded-md bg-slate-100 px-5 py-2.5 text-center text-sm font-medium text-slate-900 transition-colors hover:bg-white"
+                  className="shrink-0 rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-slate-700"
                 >
                   Application form
                 </a>
@@ -113,14 +113,14 @@ export default function EditionPage() {
 
       <section className="mx-auto max-w-5xl px-5 py-10">
         <Reveal>
-          <h2 className="text-xl font-semibold text-white">About this edition</h2>
-          <p className="mt-3 max-w-3xl leading-relaxed text-slate-400">{edition.description}</p>
+          <h2 className="text-xl font-semibold text-slate-900">About this edition</h2>
+          <p className="mt-3 max-w-3xl leading-relaxed text-slate-600">{edition.description}</p>
         </Reveal>
       </section>
 
       <section id="program" className="mx-auto max-w-5xl scroll-mt-24 px-5 pb-10">
         <Reveal>
-          <h2 className="text-xl font-semibold text-white">Program</h2>
+          <h2 className="text-xl font-semibold text-slate-900">Program</h2>
         </Reveal>
         <div className="mt-6">
           <ProgramList program={edition.program} />
@@ -136,19 +136,19 @@ export default function EditionPage() {
           {older && (
             <Link
               to={editionPath(older)}
-              className="glass p-5 transition-colors hover:border-white/20 hover:bg-white/[0.05]"
+              className="glass p-5 transition-colors hover:border-slate-400 hover:bg-slate-50"
             >
-              <p className="text-xs text-slate-600">← Previous edition</p>
-              <p className="mt-1 font-medium text-white">{older.label}</p>
+              <p className="text-xs text-slate-500">← Previous edition</p>
+              <p className="mt-1 font-medium text-slate-900">{older.label}</p>
             </Link>
           )}
           {newer && (
             <Link
               to={editionPath(newer)}
-              className="glass p-5 text-right transition-colors hover:border-white/20 hover:bg-white/[0.05] sm:col-start-2"
+              className="glass p-5 text-right transition-colors hover:border-slate-400 hover:bg-slate-50 sm:col-start-2"
             >
-              <p className="text-xs text-slate-600">Next edition →</p>
-              <p className="mt-1 font-medium text-white">{newer.label}</p>
+              <p className="text-xs text-slate-500">Next edition →</p>
+              <p className="mt-1 font-medium text-slate-900">{newer.label}</p>
             </Link>
           )}
         </div>

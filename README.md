@@ -1,4 +1,4 @@
-# CDL — Free Software Development Course
+# CDL — Community Development Lab
 
 The [cdl.rosedu.org](https://cdl.rosedu.org) website, rewritten in React and ready to deploy on Vercel.
 
@@ -211,8 +211,8 @@ sponsors: [
 | `"supporter"` | Supporter | medium logos, up to 4 per row |
 
 Omitting `tier` treats the sponsor as a `"partner"`. Omitting `logo` shows the name as text.
-Logos go in [`public/img/sponsors/`](public/img/sponsors) — SVG or transparent PNG, light
-coloured, since the site background is dark.
+Logos go in [`public/img/sponsors/`](public/img/sponsors) — SVG or transparent PNG on a
+transparent background; the site uses a light theme, so dark lettering reads best.
 
 ### 7. Opening and closing applications
 

@@ -11,10 +11,10 @@ function MentorCard({ mentor, projectCount, onOpen }: { mentor: Mentor; projectC
       type="button"
       onClick={onOpen}
       aria-label={`Details about ${mentor.name}`}
-      className="glass h-full w-full cursor-pointer p-5 text-left transition-colors hover:border-white/20 hover:bg-white/[0.05]"
+      className="glass h-full w-full cursor-pointer p-5 text-left transition-colors hover:border-slate-400 hover:bg-slate-50"
     >
       <Avatar mentor={mentor} />
-      <h3 className="mt-4 font-medium text-white">{mentor.name}</h3>
+      <h3 className="mt-4 font-medium text-slate-900">{mentor.name}</h3>
       <p className="mt-1 text-xs text-slate-500">
         {projectCount ? `${projectCount} ${projectCount === 1 ? "project" : "projects"}` : "projects coming soon"}
       </p>
@@ -32,7 +32,7 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
   return (
     <section id="mentors" className="mx-auto max-w-5xl scroll-mt-24 px-5 py-10">
       <Reveal>
-        <h2 className="text-xl font-semibold text-white">Mentors</h2>
+        <h2 className="text-xl font-semibold text-slate-900">Mentors</h2>
         <p className="mt-2 max-w-2xl text-sm text-slate-500">
           The people guiding you through your first open source contribution. Select a mentor to see their projects
           and contact details.
@@ -55,7 +55,7 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
         <Reveal>
           <div className="glass mt-6 flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-medium text-white">Mentors announced soon</p>
+              <p className="font-medium text-slate-900">Mentors announced soon</p>
               <p className="mt-1 text-sm text-slate-500">
                 The mentor list for this edition will be published before the first session.
               </p>
@@ -64,7 +64,7 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
               href="https://github.com/rosedu"
               target="_blank"
               rel="noreferrer"
-              className="shrink-0 rounded-md border border-white/15 px-4 py-2.5 text-sm text-slate-200 transition-colors hover:border-white/30 hover:text-white"
+              className="shrink-0 rounded-md border border-slate-300 px-4 py-2.5 text-sm text-slate-800 transition-colors hover:border-slate-400 hover:text-slate-900"
             >
               Want to mentor? →
             </a>

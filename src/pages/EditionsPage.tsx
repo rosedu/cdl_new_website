@@ -9,8 +9,8 @@ export default function EditionsPage() {
         <div className="absolute inset-0 grid-bg" />
         <div className="relative mx-auto max-w-5xl px-5 pb-8 pt-14">
           <Reveal>
-            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">All CDL editions</h1>
-            <p className="mt-4 max-w-2xl text-slate-400">
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">All CDL editions</h1>
+            <p className="mt-4 max-w-2xl text-slate-600">
               CDL has been running since 2013. Recent editions have their own pages; the historical ones are kept on
               the old website.
             </p>
@@ -30,7 +30,7 @@ export default function EditionsPage() {
 
       <section className="mx-auto max-w-5xl px-5 pb-16">
         <Reveal>
-          <h2 className="text-lg font-semibold text-white">Historical editions (2013–2020)</h2>
+          <h2 className="text-lg font-semibold text-slate-900">Historical editions (2013–2020)</h2>
           <p className="mt-2 text-sm text-slate-500">
             Archived on the old website, with the projects and materials of the time.
           </p>
@@ -42,10 +42,10 @@ export default function EditionsPage() {
                 href={e.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center justify-between rounded-md border border-white/[0.08] px-4 py-3 text-sm transition-colors hover:border-white/20"
+                className="group flex items-center justify-between rounded-md border border-slate-200 px-4 py-3 text-sm transition-colors hover:border-slate-400"
               >
-                <span className="text-slate-300">{e.label}</span>
-                <span className="text-slate-600 transition-colors group-hover:text-white" aria-hidden>↗</span>
+                <span className="text-slate-700">{e.label}</span>
+                <span className="text-slate-500 transition-colors group-hover:text-slate-900" aria-hidden>↗</span>
               </a>
             </Reveal>
           ))}

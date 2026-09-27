@@ -5,12 +5,12 @@ const style: Record<Session["kind"], { dot: string; badge: string; label: string
   workshop: { dot: "bg-[var(--color-accent-2)]", badge: "text-[var(--color-accent-2)]", label: "Workshop" },
   hackathon: { dot: "bg-[var(--color-accent)]", badge: "text-[var(--color-accent)]", label: "Hackathon" },
   final: { dot: "bg-[var(--color-accent-3)]", badge: "text-[var(--color-accent-3)]", label: "Final" },
-  break: { dot: "bg-slate-700", badge: "text-slate-500", label: "Break" },
+  break: { dot: "bg-slate-300", badge: "text-slate-500", label: "Break" },
 };
 
 export default function ProgramList({ program }: { program: Session[] }) {
   return (
-    <ol className="relative space-y-2 border-l border-white/10 pl-6">
+    <ol className="relative space-y-2 border-l border-slate-200 pl-6">
       {program.map((s, i) => {
         const st = style[s.kind];
         return (
@@ -28,7 +28,7 @@ export default function ProgramList({ program }: { program: Session[] }) {
                     {s.date}
                     {s.time !== "—" && <span> · {s.time}</span>}
                   </p>
-                  <p className="mt-0.5 text-[15px] text-slate-200">{s.title}</p>
+                  <p className="mt-0.5 text-[15px] text-slate-800">{s.title}</p>
                 </div>
                 <span className={`shrink-0 text-[11px] uppercase tracking-wider ${st.badge}`}>{st.label}</span>
               </div>

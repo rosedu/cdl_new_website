@@ -24,14 +24,14 @@ export default function Avatar({ mentor, size = "md" }: { mentor: Mentor; size?:
         alt={mentor.name}
         loading="lazy"
         onError={() => setFailed(true)}
-        className={`${cls} object-cover ring-1 ring-white/10`}
+        className={`${cls} object-cover ring-1 ring-slate-200`}
       />
     );
   }
 
   return (
     <span
-      className={`${cls} grid place-items-center bg-white/[0.06] font-medium text-slate-300 ring-1 ring-white/10`}
+      className={`${cls} grid place-items-center bg-slate-100 font-medium text-slate-700 ring-1 ring-slate-200`}
     >
       {initials(mentor.name)}
     </span>
