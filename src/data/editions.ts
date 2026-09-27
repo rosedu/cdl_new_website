@@ -304,6 +304,13 @@ export const editionPath = (e: Edition) => (e.season ? `/${e.year}/${e.season}` 
 export const findEdition = (year: string, season?: string) =>
   editions.find((e) => String(e.year) === year && (season ? e.season === season : !e.season));
 
+/**
+ * Parse a "YYYY-MM-DD" field as local midnight. Passing the bare string to
+ * `new Date()` would read it as midnight UTC, so in Romania a date would only
+ * take effect at 02:00 or 03:00 local time.
+ */
+export const parseDay = (iso: string) => new Date(`${iso}T00:00`);
+
 /** Sessions that actually take place — breaks are scheduled gaps, not sessions. */
 export const sessionCount = (edition: Edition) =>
   edition.program.filter((s) => s.kind !== "break").length;
@@ -317,6 +324,14 @@ export const editionEnd = (edition: Edition) => {
   const parsed = new Date(last.replace(/^[^,]+,\s*/, ""));
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 };
+
+/**
+ * True once the edition's project list is public: it needs a spreadsheet link,
+ * and either no release date or one that has already arrived.
+ * The comparison uses the visitor's own clock — see the README.
+ */
+export const isProjectListPublic = (edition: Edition) =>
+  Boolean(edition.projectsUrl) && (!edition.projectsPublicFrom || new Date() >= parseDay(edition.projectsPublicFrom));
 
 /** True while the edition has not finished yet. */
 export const isUpcoming = (edition: Edition) => {
@@ -335,7 +350,7 @@ export const currentEdition = editions[0];
 export const isApplyOpen = (edition: Edition) => {
   if (!edition.applyUrl || edition.id !== currentEdition.id) return false;
   if (!edition.applyDeadline) return true;
-  const end = new Date(edition.applyDeadline);
+  const end = parseDay(edition.applyDeadline);
   end.setHours(23, 59, 59, 999);
   return new Date() <= end;
 };

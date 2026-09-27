@@ -1,7 +1,7 @@
-import type { Edition } from "../data/editions";
+import { isProjectListPublic, parseDay, type Edition } from "../data/editions";
 
 const fmt = (iso: string) =>
-  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  parseDay(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
 /**
  * The button linking to the project spreadsheet.
@@ -12,9 +12,8 @@ export default function ProjectsButton({ edition, isCurrent }: { edition: Editio
   if (!isCurrent) return null;
 
   const from = edition.projectsPublicFrom;
-  const released = !from || new Date() >= new Date(from);
 
-  if (edition.projectsUrl && released) {
+  if (isProjectListPublic(edition)) {
     return (
       <a
         href={edition.projectsUrl}
