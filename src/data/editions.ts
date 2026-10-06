@@ -105,7 +105,7 @@ export const editions: Edition[] = [
     // page and on the edition page, and disappears on its own after
     // `applyDeadline`.
     applyUrl: "https://forms.gle/E4Tad1aPZH6cr6No7",
-    applyDeadline: "2026-10-05",
+    applyDeadline: "2026-10-08",
 
     location: "Bucharest, in person",
 
@@ -315,14 +315,33 @@ export const parseDay = (iso: string) => new Date(`${iso}T00:00`);
 export const sessionCount = (edition: Edition) =>
   edition.program.filter((s) => s.kind !== "break").length;
 
-/**
- * The day the edition ends, parsed from the last entry in the program
- * ("Saturday, 12 December 2026" -> 12 December 2026).
- */
-export const editionEnd = (edition: Edition) => {
-  const last = edition.program.at(-1)?.date ?? "";
-  const parsed = new Date(last.replace(/^[^,]+,\s*/, ""));
+/** The day of a program entry, parsed from its "Weekday, D Month YYYY" label. */
+export const sessionDate = (session: Session) => {
+  const parsed = new Date(session.date.replace(/^[^,]+,\s*/, ""));
   return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+/** The day the edition ends, parsed from the last entry in the program. */
+export const editionEnd = (edition: Edition) => {
+  const last = edition.program.at(-1);
+  return last ? sessionDate(last) : null;
+};
+
+/**
+ * The moment the application link goes away: the start of the first session.
+ * Late applications are accepted past the advertised deadline, but not once
+ * the course is under way. The time of day comes from the session's `time`
+ * label ("10:00-13:00" -> 10:00); without a usable one it falls back to
+ * midnight that day.
+ */
+export const applyWindowEnd = (edition: Edition) => {
+  const first = edition.program.find((s) => s.kind !== "break");
+  const day = first ? sessionDate(first) : null;
+  if (!day || !first) return null;
+  const start = first.time.match(/^(\d{1,2}):(\d{2})/);
+  if (start) day.setHours(Number(start[1]), Number(start[2]), 0, 0);
+  else day.setHours(0, 0, 0, 0);
+  return day;
 };
 
 /**
@@ -343,16 +362,29 @@ export const isUpcoming = (edition: Edition) => {
 export const currentEdition = editions[0];
 
 /**
- * Applications are open only if the edition has a form, is the current edition
- * and the deadline has not passed. This keeps an old edition from advertising
- * open applications just because its form link is still in the data.
+ * Applications are open only if the edition has a form, is the current edition,
+ * and the first session has not started yet. The `applyDeadline` is what gets
+ * advertised, not what closes the form — see `isLateApplication`.
+ *
+ * Requiring the current edition keeps an old one from advertising open
+ * applications just because its form link is still in the data.
  */
 export const isApplyOpen = (edition: Edition) => {
   if (!edition.applyUrl || edition.id !== currentEdition.id) return false;
-  if (!edition.applyDeadline) return true;
-  const end = parseDay(edition.applyDeadline);
-  end.setHours(23, 59, 59, 999);
-  return new Date() <= end;
+  const end = applyWindowEnd(edition);
+  return !end || new Date() <= end;
+};
+
+/**
+ * True once the advertised deadline has passed while the form is still up, so
+ * the page can say applications are late rather than quote a deadline that has
+ * already gone by.
+ */
+export const isLateApplication = (edition: Edition) => {
+  if (!edition.applyDeadline) return false;
+  const deadline = parseDay(edition.applyDeadline);
+  deadline.setHours(23, 59, 59, 999);
+  return new Date() > deadline;
 };
 
 /**
