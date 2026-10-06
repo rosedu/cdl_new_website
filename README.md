@@ -259,17 +259,19 @@ applyDeadline: "2026-10-05",
 ```
 
 Setting `applyUrl` is enough to show them. **`applyDeadline` is what gets advertised, not what
-closes the form.** The link stays up until the end of the **second session**, because people
-are still let in after the course has started — the date comes from the program, counting only
-real sessions, so a break in between does not shift it.
+closes the form.** Late applications are accepted past it, right up to the moment the **first
+session starts** — taken from the program, including the time of day parsed from the session's
+`time` label, and skipping any leading break.
 
 That gives three states:
 
 | When | What the edition page shows |
 | --- | --- |
-| before `applyDeadline` | “Applications are open · Deadline: 5 October 2026” |
-| after the deadline, up to the second session | “Applications are still open · The deadline has passed, but you can still join until 17 October 2026.” |
-| after the second session | nothing — the banner and both buttons disappear |
+| before `applyDeadline` | “Applications are open · Deadline: 8 October 2026” |
+| after the deadline, before the first session | “Applications are still open · The deadline has passed, but you can still join until the first session starts, on 10 October 2026 at 10:00.” |
+| once the first session has started | nothing — the banner and both buttons disappear |
+
+A deadline runs to the end of its day, so `"2026-10-08"` means 8 October at 23:59 local time.
 
 To take the form down earlier than that, remove `applyUrl`.
 
@@ -321,7 +323,7 @@ Worth knowing about before adding UI of your own:
 | `isUpcoming(edition)` | whether the edition has yet to finish |
 | `isApplyOpen(edition)` | whether to show the application form link |
 | `isLateApplication(edition)` | whether the advertised deadline has already passed |
-| `applyWindowEnd(edition)` | the end of the second session, when the form link goes away |
+| `applyWindowEnd(edition)` | the start of the first session, when the form link goes away |
 | `sessionDate(session)` | a program entry's date, parsed from its label |
 | `isProjectListPublic(edition)` | whether the project list button is active |
 | `projectsByMentor(edition, id)` | a mentor's projects, deduplicated |

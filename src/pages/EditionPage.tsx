@@ -21,6 +21,9 @@ import {
 } from "../data/editions";
 
 const day = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+const dayAndTime = (d: Date) =>
+  `${day(d)} at ${d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`;
 import NotFound from "./NotFound";
 
 export default function EditionPage() {
@@ -107,7 +110,8 @@ export default function EditionPage() {
                   {late
                     ? windowEnd && (
                         <p className="mt-1 text-sm text-slate-500">
-                          The deadline has passed, but you can still join until {day(windowEnd)}.
+                          The deadline has passed, but you can still join until the first session starts, on{" "}
+                          {dayAndTime(windowEnd)}.
                         </p>
                       )
                     : edition.applyDeadline && (

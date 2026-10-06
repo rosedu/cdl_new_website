@@ -105,7 +105,7 @@ export const editions: Edition[] = [
     // page and on the edition page, and disappears on its own after
     // `applyDeadline`.
     applyUrl: "https://forms.gle/E4Tad1aPZH6cr6No7",
-    applyDeadline: "2026-10-07",
+    applyDeadline: "2026-10-08",
 
     location: "Bucharest, in person",
 
@@ -328,14 +328,19 @@ export const editionEnd = (edition: Edition) => {
 };
 
 /**
- * The last moment the application link is shown: the end of the second
- * session. People are still let in after the course has started, so the form
- * outlives the advertised deadline.
+ * The moment the application link goes away: the start of the first session.
+ * Late applications are accepted past the advertised deadline, but not once
+ * the course is under way. The time of day comes from the session's `time`
+ * label ("10:00-13:00" -> 10:00); without a usable one it falls back to
+ * midnight that day.
  */
 export const applyWindowEnd = (edition: Edition) => {
-  const second = edition.program.filter((s) => s.kind !== "break")[1];
-  const day = second ? sessionDate(second) : null;
-  day?.setHours(23, 59, 59, 999);
+  const first = edition.program.find((s) => s.kind !== "break");
+  const day = first ? sessionDate(first) : null;
+  if (!day || !first) return null;
+  const start = first.time.match(/^(\d{1,2}):(\d{2})/);
+  if (start) day.setHours(Number(start[1]), Number(start[2]), 0, 0);
+  else day.setHours(0, 0, 0, 0);
   return day;
 };
 
@@ -358,7 +363,7 @@ export const currentEdition = editions[0];
 
 /**
  * Applications are open only if the edition has a form, is the current edition,
- * and the second session has not finished yet. The `applyDeadline` is what gets
+ * and the first session has not started yet. The `applyDeadline` is what gets
  * advertised, not what closes the form — see `isLateApplication`.
  *
  * Requiring the current edition keeps an old one from advertising open
