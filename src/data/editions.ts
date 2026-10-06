@@ -105,7 +105,7 @@ export const editions: Edition[] = [
     // page and on the edition page, and disappears on its own after
     // `applyDeadline`.
     applyUrl: "https://forms.gle/E4Tad1aPZH6cr6No7",
-    applyDeadline: "2026-10-05",
+    applyDeadline: "2026-10-07",
 
     location: "Bucharest, in person",
 
