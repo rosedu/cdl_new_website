@@ -315,14 +315,28 @@ export const parseDay = (iso: string) => new Date(`${iso}T00:00`);
 export const sessionCount = (edition: Edition) =>
   edition.program.filter((s) => s.kind !== "break").length;
 
-/**
- * The day the edition ends, parsed from the last entry in the program
- * ("Saturday, 12 December 2026" -> 12 December 2026).
- */
-export const editionEnd = (edition: Edition) => {
-  const last = edition.program.at(-1)?.date ?? "";
-  const parsed = new Date(last.replace(/^[^,]+,\s*/, ""));
+/** The day of a program entry, parsed from its "Weekday, D Month YYYY" label. */
+export const sessionDate = (session: Session) => {
+  const parsed = new Date(session.date.replace(/^[^,]+,\s*/, ""));
   return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+/** The day the edition ends, parsed from the last entry in the program. */
+export const editionEnd = (edition: Edition) => {
+  const last = edition.program.at(-1);
+  return last ? sessionDate(last) : null;
+};
+
+/**
+ * The last moment the application link is shown: the end of the second
+ * session. People are still let in after the course has started, so the form
+ * outlives the advertised deadline.
+ */
+export const applyWindowEnd = (edition: Edition) => {
+  const second = edition.program.filter((s) => s.kind !== "break")[1];
+  const day = second ? sessionDate(second) : null;
+  day?.setHours(23, 59, 59, 999);
+  return day;
 };
 
 /**
@@ -343,16 +357,29 @@ export const isUpcoming = (edition: Edition) => {
 export const currentEdition = editions[0];
 
 /**
- * Applications are open only if the edition has a form, is the current edition
- * and the deadline has not passed. This keeps an old edition from advertising
- * open applications just because its form link is still in the data.
+ * Applications are open only if the edition has a form, is the current edition,
+ * and the second session has not finished yet. The `applyDeadline` is what gets
+ * advertised, not what closes the form — see `isLateApplication`.
+ *
+ * Requiring the current edition keeps an old one from advertising open
+ * applications just because its form link is still in the data.
  */
 export const isApplyOpen = (edition: Edition) => {
   if (!edition.applyUrl || edition.id !== currentEdition.id) return false;
-  if (!edition.applyDeadline) return true;
-  const end = parseDay(edition.applyDeadline);
-  end.setHours(23, 59, 59, 999);
-  return new Date() <= end;
+  const end = applyWindowEnd(edition);
+  return !end || new Date() <= end;
+};
+
+/**
+ * True once the advertised deadline has passed while the form is still up, so
+ * the page can say applications are late rather than quote a deadline that has
+ * already gone by.
+ */
+export const isLateApplication = (edition: Edition) => {
+  if (!edition.applyDeadline) return false;
+  const deadline = parseDay(edition.applyDeadline);
+  deadline.setHours(23, 59, 59, 999);
+  return new Date() > deadline;
 };
 
 /**

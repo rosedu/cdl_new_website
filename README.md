@@ -159,7 +159,8 @@ wording depends on whether the edition has finished. The end date is read from t
 in `program`:
 
 - an edition that has **not finished yet** shows “Mentors announced soon”, plus a link for
-  people who want to mentor;
+  people who want to mentor. It deliberately promises no date — mentors are not necessarily
+  known by the first session;
 - a **finished** edition shows “Mentors not recorded”, since its mentors are never going to be
   announced now.
 
@@ -257,8 +258,20 @@ applyUrl: "https://forms.gle/xxxxxxxx",
 applyDeadline: "2026-10-05",
 ```
 
-Setting `applyUrl` is enough to show them. To hide them, either let `applyDeadline` pass —
-they disappear at the end of that day — or remove `applyUrl`.
+Setting `applyUrl` is enough to show them. **`applyDeadline` is what gets advertised, not what
+closes the form.** The link stays up until the end of the **second session**, because people
+are still let in after the course has started — the date comes from the program, counting only
+real sessions, so a break in between does not shift it.
+
+That gives three states:
+
+| When | What the edition page shows |
+| --- | --- |
+| before `applyDeadline` | “Applications are open · Deadline: 5 October 2026” |
+| after the deadline, up to the second session | “Applications are still open · The deadline has passed, but you can still join until 17 October 2026.” |
+| after the second session | nothing — the banner and both buttons disappear |
+
+To take the form down earlier than that, remove `applyUrl`.
 
 Applications count as open **for the current edition only** (the first in the list). An old
 edition that still has an `applyUrl` in its data never advertises open applications, which is
@@ -306,7 +319,10 @@ Worth knowing about before adding UI of your own:
 | `sessionCount(edition)` | how many sessions there are, breaks excluded |
 | `editionEnd(edition)` | the edition's last day, parsed from the program |
 | `isUpcoming(edition)` | whether the edition has yet to finish |
-| `isApplyOpen(edition)` | whether to advertise the application form |
+| `isApplyOpen(edition)` | whether to show the application form link |
+| `isLateApplication(edition)` | whether the advertised deadline has already passed |
+| `applyWindowEnd(edition)` | the end of the second session, when the form link goes away |
+| `sessionDate(session)` | a program entry's date, parsed from its label |
 | `isProjectListPublic(edition)` | whether the project list button is active |
 | `projectsByMentor(edition, id)` | a mentor's projects, deduplicated |
 | `parseDay(iso)` | a `YYYY-MM-DD` string as local midnight |

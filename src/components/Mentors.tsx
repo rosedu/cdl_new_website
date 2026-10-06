@@ -58,7 +58,7 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
               </p>
               <p className="mt-1 text-sm text-slate-500">
                 {upcoming
-                  ? "The mentor list for this edition will be published before the first session."
+                  ? "The mentor list for this edition has not been published yet."
                   : "The mentor list for this edition was not recorded on the site."}
               </p>
             </div>

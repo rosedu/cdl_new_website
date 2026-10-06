@@ -7,15 +7,20 @@ import Mentors from "../components/Mentors";
 import ProjectsButton from "../components/ProjectsButton";
 import Sponsors from "../components/Sponsors";
 import {
+  applyWindowEnd,
   currentEdition,
   editionPath,
   editions,
   findEdition,
   isApplyOpen,
+  isLateApplication,
+  parseDay,
   isUpcoming,
   legacySeasonSlugs,
   sessionCount,
 } from "../data/editions";
+
+const day = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 import NotFound from "./NotFound";
 
 export default function EditionPage() {
@@ -40,6 +45,8 @@ export default function EditionPage() {
   const older = editions[idx + 1];
   const isCurrent = edition.id === currentEdition.id;
   const applyOpen = isApplyOpen(edition);
+  const late = isLateApplication(edition);
+  const windowEnd = applyWindowEnd(edition);
   const workshops = edition.program.filter((s) => s.kind === "workshop").length;
   const hackathons = edition.program.filter((s) => s.kind === "hackathon").length;
 
@@ -94,17 +101,18 @@ export default function EditionPage() {
             <Reveal delay={160}>
               <div className="glass mt-8 flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="font-medium text-slate-900">Applications are open</p>
-                  {edition.applyDeadline && (
-                    <p className="mt-1 text-sm text-slate-500">
-                      Deadline:{" "}
-                      {new Date(edition.applyDeadline).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
-                  )}
+                  <p className="font-medium text-slate-900">
+                    {late ? "Applications are still open" : "Applications are open"}
+                  </p>
+                  {late
+                    ? windowEnd && (
+                        <p className="mt-1 text-sm text-slate-500">
+                          The deadline has passed, but you can still join until {day(windowEnd)}.
+                        </p>
+                      )
+                    : edition.applyDeadline && (
+                        <p className="mt-1 text-sm text-slate-500">Deadline: {day(parseDay(edition.applyDeadline))}</p>
+                      )}
                 </div>
                 <a
                   href={edition.applyUrl}
