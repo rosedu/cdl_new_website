@@ -109,6 +109,18 @@
     background-size: 64px 64px;
     mask-image: radial-gradient(ellipse 70% 50% at 50% 0%, #000 30%, transparent 100%);
   }
+  /*
+   * The logo is black line art, invisible on the dark canvas, so it is
+   * inverted there. Drop this class if you supply an SVG that already follows
+   * the theme through `currentColor`.
+   */
+  .logo-mark {
+    transition: filter 0.25s ease;
+  }
+  [data-theme="dark"] .logo-mark {
+    filter: invert(1) hue-rotate(180deg);
+  }
+
   /* Metadata and subtitles use the raw-editor font. */
   .meta {
     font-family: var(--font-mono);

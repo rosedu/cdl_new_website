@@ -1,4 +1,13 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+
+/**
+ * The project logo. Drop the file in at this path and it replaces the drawn
+ * keycaps below; until then, or if it fails to load, the keycaps stand in.
+ * An SVG whose strokes use `currentColor` needs no `logo-mark` inversion —
+ * see the README.
+ */
+const LOGO_SRC = "/img/cdl-logo.svg";
 
 /** The CDL keycaps, redrawn so they follow the theme instead of shipping a white PNG. */
 function Keycaps() {
@@ -38,13 +47,21 @@ function Keycaps() {
  */
 export default function Wordmark({ onNavigate }: { onNavigate?: () => void }) {
   const { pathname } = useLocation();
+  const [logoFailed, setLogoFailed] = useState(false);
   const onHome = pathname === "/";
 
-  const content = (
+  const content = logoFailed ? (
     <>
       <Keycaps />
       <span className="hidden text-sm text-[var(--c-muted)] sm:inline">Community Development Lab</span>
     </>
+  ) : (
+    <img
+      src={LOGO_SRC}
+      alt="CDL — Community Development Lab"
+      onError={() => setLogoFailed(true)}
+      className="logo-mark h-9 w-auto"
+    />
   );
 
   if (onHome) {
