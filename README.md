@@ -375,16 +375,12 @@ colour comes from CSS and the artwork follows the active theme — no inverted P
 that disappears on the dark canvas. The source artwork the glyphs are based on is kept in
 `design/`.
 
-Two arrangements are built on them:
+`CdlMark` arranges the three initials in a row; `src/components/Wordmark.tsx` places it in the
+header. The mark itself is not a link — a back-to-home arrow sits to its left instead, and is
+left out on the home page, where it would have nowhere to go.
 
-- `CdlMark` — the three initials in a row, used in the header. It links back to the home page
-  **except on the home page itself**, where it renders as plain artwork: a mark that looks
-  clickable but has nowhere to go is worse than one that does not invite the click.
-- `Lockup` (`src/components/Lockup.tsx`) — the stacked arrangement used as the home page
-  title: circuit initials in green, the rest of each word in blue, behind a vertical rule.
-
-The glyphs are decorative (`aria-hidden`), so the lockup carries the readable name in visually
-hidden text. Without it a screen reader would announce “ommunity evelopment ab”.
+The glyphs are decorative (`aria-hidden`), so the header carries the name in visually hidden
+text alongside them.
 
 The two logo colours are their own tokens, so they can be retuned without touching the
 headings or the buttons:
