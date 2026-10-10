@@ -9,8 +9,8 @@ export default function EditionsPage() {
         <div className="absolute inset-0 grid-bg" />
         <div className="relative mx-auto max-w-5xl px-5 pb-8 pt-14">
           <Reveal>
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">All CDL editions</h1>
-            <p className="mt-4 max-w-2xl text-slate-600">
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">All CDL editions</h1>
+            <p className="mt-4 max-w-2xl text-[var(--c-text)]">
               CDL has been running since 2013. Recent editions have their own pages; the historical ones are kept on
               the old website.
             </p>
@@ -30,8 +30,8 @@ export default function EditionsPage() {
 
       <section className="mx-auto max-w-5xl px-5 pb-16">
         <Reveal>
-          <h2 className="text-lg font-semibold text-slate-900">Historical editions (2013–2020)</h2>
-          <p className="mt-2 text-sm text-slate-500">
+          <h2 className="text-lg font-semibold">Historical editions (2013–2020)</h2>
+          <p className="mt-2 text-sm text-[var(--c-muted)]">
             Archived on the old website, with the projects and materials of the time.
           </p>
         </Reveal>
@@ -42,10 +42,10 @@ export default function EditionsPage() {
                 href={e.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex items-center justify-between rounded-md border border-slate-200 px-4 py-3 text-sm transition-colors hover:border-slate-400"
+                className="group flex items-center justify-between rounded-md border border-[var(--c-border)] px-4 py-3 text-sm transition-colors hover:border-[var(--c-border-hover)]"
               >
-                <span className="text-slate-700">{e.label}</span>
-                <span className="text-slate-500 transition-colors group-hover:text-slate-900" aria-hidden>↗</span>
+                <span className="text-[var(--c-text)]">{e.label}</span>
+                <span className="text-[var(--c-muted)] transition-colors group-hover:text-[var(--c-strong)]" aria-hidden>↗</span>
               </a>
             </Reveal>
           ))}

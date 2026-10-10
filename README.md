@@ -331,17 +331,51 @@ Worth knowing about before adding UI of your own:
 
 ## Design notes
 
-The site uses a light theme, deliberately restrained: an off-white page, white cards, slate
-text, and muted indigo, teal and rose accents used only to distinguish session types. There
-are no CSS animations, no gradient buttons or gradient text. Content reveals on scroll with a
-short fade, and that is disabled under `prefers-reduced-motion`.
+The site follows GitHub's visual language, in both a light and a dark theme.
 
-Two rules worth keeping when adding UI:
+### Theming
 
+Colours are CSS variables defined twice in `src/index.css`: on `:root` for light, and under
+`[data-theme="dark"]` for dark. Components never hardcode a colour — they reference the
+variables through arbitrary Tailwind values such as `text-[var(--c-muted)]`. Adding a colour
+means adding it to **both** blocks.
+
+| Variable | Light | Dark |
+| --- | --- | --- |
+| `--c-page` | `#f6f8fa` | `#0d1117` (GitHub's dark canvas) |
+| `--c-surface` | `#ffffff` | `#161b22` |
+| `--c-border` | `#d0d7de` | `#30363d` |
+| `--c-strong` / `--c-text` / `--c-muted` | `#1f2328` / `#41484f` / `#59636e` | `#e6edf3` / `#c9d1d9` / `#8b949e` |
+| `--c-heading` | `#0969da` | `#58a6ff` |
+| `--c-green` / `--c-green-hover` | `#238636` / `#2ea043` | same |
+
+The toggle lives in the navigation bar, right after the menu items, and stores the choice in
+`localStorage` under `cdl-theme`. With nothing stored, the visitor's `prefers-color-scheme` is
+used. An inline script in `index.html` applies the attribute **before first paint**, so the
+page never flashes the wrong theme; if you rename the storage key, change it there too.
+
+Switching adds `theme-switching` to `<html>` for 300ms, which is the only time colour
+transitions are active — so they never slow down hover states.
+
+### Typography
+
+Two stacks, mirroring GitHub:
+
+- **Rendered-Markdown sans** (`--font-sans`) for headings and body copy — this is the default,
+  nothing needs to opt in.
+- **Raw-editor monospace** (`--font-mono`) for metadata and subtitles: dates, periods, session
+  counts, URLs, labels. Use the `.meta` helper, which applies the mono stack and the muted
+  colour in one class.
+
+### Rules worth keeping
+
+- **Headings are blue.** `h1`, `h2` and `h3` get `--c-heading` from a base rule in
+  `index.css`. Do not put a text colour utility on a heading — it would override that.
+- **Buttons are GitHub's merge green.** Primary actions use `.btn-green` (filled); secondary
+  ones use `.btn-green-outline`. Icon-only controls — the theme toggle, the dialog close
+  button, the mobile menu — stay neutral, since colouring them green would read as an action.
 - **Only interactive things get hover treatments.** Program rows are not links, so they have
   no hover state — a highlight there reads as “click me” and does nothing.
-- **Keep text at slate-500 or darker.** On the off-white background, slate-400 lands around
-  2.6:1 contrast, below the WCAG AA threshold.
 
 ## Historical editions
 

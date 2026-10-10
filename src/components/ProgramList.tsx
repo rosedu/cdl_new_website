@@ -2,15 +2,15 @@ import type { Session } from "../data/editions";
 import Reveal from "./Reveal";
 
 const style: Record<Session["kind"], { dot: string; badge: string; label: string }> = {
-  workshop: { dot: "bg-[var(--color-accent-2)]", badge: "text-[var(--color-accent-2)]", label: "Workshop" },
-  hackathon: { dot: "bg-[var(--color-accent)]", badge: "text-[var(--color-accent)]", label: "Hackathon" },
-  final: { dot: "bg-[var(--color-accent-3)]", badge: "text-[var(--color-accent-3)]", label: "Final" },
-  break: { dot: "bg-slate-300", badge: "text-slate-500", label: "Break" },
+  workshop: { dot: "bg-[var(--c-workshop)]", badge: "text-[var(--c-workshop)]", label: "Workshop" },
+  hackathon: { dot: "bg-[var(--c-hackathon)]", badge: "text-[var(--c-hackathon)]", label: "Hackathon" },
+  final: { dot: "bg-[var(--c-final)]", badge: "text-[var(--c-final)]", label: "Final" },
+  break: { dot: "bg-[var(--c-border-hover)]", badge: "text-[var(--c-muted)]", label: "Break" },
 };
 
 export default function ProgramList({ program }: { program: Session[] }) {
   return (
-    <ol className="relative space-y-2 border-l border-slate-200 pl-6">
+    <ol className="relative space-y-2 border-l border-[var(--c-border)] pl-6">
       {program.map((s, i) => {
         const st = style[s.kind];
         return (
@@ -24,13 +24,13 @@ export default function ProgramList({ program }: { program: Session[] }) {
                 }`}
               >
                 <div className="min-w-0">
-                  <p className="font-mono text-xs text-slate-500">
+                  <p className="font-mono text-xs text-[var(--c-muted)]">
                     {s.date}
                     {s.time !== "—" && <span> · {s.time}</span>}
                   </p>
-                  <p className="mt-0.5 text-[15px] text-slate-800">{s.title}</p>
+                  <p className="mt-0.5 text-[15px] text-[var(--c-strong)]">{s.title}</p>
                 </div>
-                <span className={`shrink-0 text-[11px] uppercase tracking-wider ${st.badge}`}>{st.label}</span>
+                <span className={`shrink-0 font-mono text-[11px] uppercase tracking-wider ${st.badge}`}>{st.label}</span>
               </div>
             </li>
           </Reveal>
