@@ -3,6 +3,7 @@ import Reveal from "../components/Reveal";
 import ProgramList from "../components/ProgramList";
 import EditionCard from "../components/EditionCard";
 import ProjectsButton from "../components/ProjectsButton";
+import Lockup from "../components/Lockup";
 import { currentEdition, editionPath, editions, isApplyOpen, legacyEditions } from "../data/editions";
 
 const pillars = [
@@ -51,8 +52,8 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={60}>
-            <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-              Community Development Lab
+            <h1 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">
+              <Lockup />
             </h1>
           </Reveal>
 
