@@ -367,6 +367,15 @@ Two stacks, mirroring GitHub:
   counts, URLs, labels. Use the `.meta` helper, which applies the mono stack and the muted
   colour in one class.
 
+### The wordmark
+
+`src/components/Wordmark.tsx` draws the CDL keycaps as inline SVG rather than shipping the
+logo PNG, so it picks up the theme instead of sitting in a white box on the dark background.
+
+It is a link back to the home page **except on the home page itself**, where it renders as
+plain text — a brand mark that looks clickable but goes nowhere is worse than one that does
+not look clickable.
+
 ### Rules worth keeping
 
 - **Headings are blue.** `h1`, `h2` and `h3` get `--c-heading` from a base rule in
