@@ -11,11 +11,11 @@ function MentorCard({ mentor, projectCount, onOpen }: { mentor: Mentor; projectC
       type="button"
       onClick={onOpen}
       aria-label={`Details about ${mentor.name}`}
-      className="glass h-full w-full cursor-pointer p-5 text-left transition-colors hover:border-slate-400 hover:bg-slate-50"
+      className="glass h-full w-full cursor-pointer p-5 text-left transition-colors hover:border-[var(--c-border-hover)] hover:bg-[var(--c-surface-hover)]"
     >
       <Avatar mentor={mentor} />
-      <h3 className="mt-4 font-medium text-slate-900">{mentor.name}</h3>
-      <p className="mt-1 text-xs text-slate-500">
+      <h3 className="mt-4 font-medium">{mentor.name}</h3>
+      <p className="meta mt-1 text-xs">
         {projectCount ? `${projectCount} ${projectCount === 1 ? "project" : "projects"}` : "projects coming soon"}
       </p>
     </button>
@@ -30,8 +30,8 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
   return (
     <section id="mentors" className="mx-auto max-w-5xl scroll-mt-24 px-5 py-10">
       <Reveal>
-        <h2 className="text-xl font-semibold text-slate-900">Mentors</h2>
-        <p className="mt-2 max-w-2xl text-sm text-slate-500">
+        <h2 className="text-xl font-semibold">Mentors</h2>
+        <p className="mt-2 max-w-2xl text-sm text-[var(--c-muted)]">
           The people guiding you through your first open source contribution. Select a mentor to see their projects
           and contact details.
         </p>
@@ -51,12 +51,12 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
         </div>
       ) : (
         <Reveal>
-          <div className="mt-6 flex flex-col gap-3 rounded-xl border border-dashed border-slate-300 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-6 flex flex-col gap-3 rounded-xl border border-dashed border-[var(--c-border-strong)] p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-medium text-slate-900">
+              <p className="font-medium text-[var(--c-strong)]">
                 {upcoming ? "Mentors announced soon" : "Mentors not recorded"}
               </p>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[var(--c-muted)]">
                 {upcoming
                   ? "The mentor list for this edition has not been published yet."
                   : "The mentor list for this edition was not recorded on the site."}
@@ -67,7 +67,7 @@ export default function Mentors({ edition, upcoming }: { edition: Edition; upcom
                 href="https://github.com/rosedu"
                 target="_blank"
                 rel="noreferrer"
-                className="shrink-0 rounded-md border border-slate-300 px-4 py-2.5 text-sm text-slate-800 transition-colors hover:border-slate-400 hover:text-slate-900"
+                className="btn-green-outline shrink-0 rounded-md px-4 py-2.5 text-sm transition-colors"
               >
                 Want to mentor? →
               </a>

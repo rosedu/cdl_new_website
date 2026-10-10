@@ -19,7 +19,7 @@ export default function ProjectsButton({ edition, isCurrent }: { edition: Editio
         href={edition.projectsUrl}
         target="_blank"
         rel="noreferrer"
-        className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-5 py-3 text-sm font-medium text-slate-800 transition-colors hover:border-slate-400 hover:text-slate-900"
+        className="btn-green-outline inline-flex items-center gap-2 rounded-md px-5 py-3 text-sm font-medium transition-colors"
       >
         Project list
         <span aria-hidden>↗</span>
@@ -30,10 +30,10 @@ export default function ProjectsButton({ edition, isCurrent }: { edition: Editio
   return (
     <span
       title={from ? `The list is published on ${fmt(from)}` : "The project list is published soon"}
-      className="inline-flex cursor-not-allowed items-center rounded-md border border-dashed border-slate-300 px-5 py-3 text-sm text-slate-500"
+      className="inline-flex cursor-not-allowed items-center rounded-md border border-dashed border-[var(--c-border-strong)] px-5 py-3 text-sm text-[var(--c-muted)]"
     >
       Project list
-      <span className="font-normal text-slate-500">{from ? ` · from ${fmt(from)}` : " · soon"}</span>
+      <span className="font-normal text-[var(--c-muted)]">{from ? ` · from ${fmt(from)}` : " · soon"}</span>
     </span>
   );
 }
