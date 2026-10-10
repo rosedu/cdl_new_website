@@ -4,11 +4,16 @@ export type Theme = "light" | "dark";
 
 const STORAGE_KEY = "cdl-theme";
 
-export const readTheme = (): Theme => {
+const systemTheme = (): Theme =>
+  window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+/** The visitor's own choice, if they made one. Nothing stored means "follow the system". */
+const storedTheme = (): Theme | null => {
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === "light" || stored === "dark") return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return stored === "light" || stored === "dark" ? stored : null;
 };
+
+export const readTheme = (): Theme => storedTheme() ?? systemTheme();
 
 /**
  * Applies the theme and lets colours cross-fade. The transition class is added
@@ -28,6 +33,18 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
 
   useEffect(() => {
     setTheme(readTheme());
+
+    // Keep following the system while the visitor has not chosen for themselves,
+    // so a machine that switches to dark in the evening takes the page with it.
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+    const onSystemChange = () => {
+      if (storedTheme()) return;
+      const next = systemTheme();
+      setTheme(next);
+      applyTheme(next);
+    };
+    query.addEventListener("change", onSystemChange);
+    return () => query.removeEventListener("change", onSystemChange);
   }, []);
 
   const toggle = () => {
