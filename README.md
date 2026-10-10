@@ -367,23 +367,32 @@ Two stacks, mirroring GitHub:
   counts, URLs, labels. Use the `.meta` helper, which applies the mono stack and the muted
   colour in one class.
 
-### The wordmark
+### The logo
 
-`src/components/Wordmark.tsx` shows the project logo from `public/img/cdl-logo.svg`. If that
-file is missing or fails to load, it falls back to the CDL keycaps drawn as inline SVG, so the
-header never shows a broken image.
+The CDL initials are drawn as circuit traces in `src/components/CdlGlyphs.tsx`, one component
+per letter, as inline SVG rather than image files. Every stroke uses `currentColor`, so the
+colour comes from CSS and the artwork follows the active theme — no inverted PNGs and nothing
+that disappears on the dark canvas. The source artwork the glyphs are based on is kept in
+`design/`.
 
-**Replacing the logo:** drop the file in at `public/img/cdl-logo.svg`. For a different name or
-format, change `LOGO_SRC` at the top of the component.
+Two arrangements are built on them:
 
-The logo carries the `logo-mark` class, which inverts it on the dark theme — the artwork is
-dark line art that would otherwise be invisible on `#0d1117`. If you supply an SVG whose
-strokes use `currentColor`, or one that already reads on both backgrounds, remove that class
-and the matching rule in `index.css`; inverting a logo is a workaround, not the nice solution.
+- `CdlMark` — the three initials in a row, used in the header. It links back to the home page
+  **except on the home page itself**, where it renders as plain artwork: a mark that looks
+  clickable but has nowhere to go is worse than one that does not invite the click.
+- `Lockup` (`src/components/Lockup.tsx`) — the stacked arrangement used as the home page
+  title: circuit initials in green, the rest of each word in blue, behind a vertical rule.
 
-It is a link back to the home page **except on the home page itself**, where it renders as
-plain text — a brand mark that looks clickable but goes nowhere is worse than one that does
-not look clickable.
+The glyphs are decorative (`aria-hidden`), so the lockup carries the readable name in visually
+hidden text. Without it a screen reader would announce “ommunity evelopment ab”.
+
+The two logo colours are their own tokens, so they can be retuned without touching the
+headings or the buttons:
+
+| Variable | Light | Dark |
+| --- | --- | --- |
+| `--c-logo-green` | `#1a7f37` | `#3fb950` |
+| `--c-logo-blue` | `#0969da` | `#58a6ff` |
 
 ### Rules worth keeping
 

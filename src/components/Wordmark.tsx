@@ -1,71 +1,23 @@
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { CdlMark } from "./CdlGlyphs";
 
 /**
- * The project logo. Drop the file in at this path and it replaces the drawn
- * keycaps below; until then, or if it fails to load, the keycaps stand in.
- * An SVG whose strokes use `currentColor` needs no `logo-mark` inversion —
- * see the README.
- */
-const LOGO_SRC = "/img/cdl-logo.svg";
-
-/** The CDL keycaps, redrawn so they follow the theme instead of shipping a white PNG. */
-function Keycaps() {
-  return (
-    <svg width="62" height="20" viewBox="0 0 62 20" aria-hidden className="shrink-0">
-      {["C", "D", "L"].map((letter, i) => (
-        <g key={letter} transform={`translate(${i * 21}, 0)`}>
-          <rect
-            x="0.5"
-            y="0.5"
-            width="19"
-            height="19"
-            rx="4"
-            fill="var(--c-surface-2)"
-            stroke="var(--c-border-strong)"
-          />
-          <text
-            x="10"
-            y="14.5"
-            textAnchor="middle"
-            fontSize="11"
-            fontWeight="600"
-            fontFamily="var(--font-mono)"
-            fill="var(--c-strong)"
-          >
-            {letter}
-          </text>
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-/**
- * The site's wordmark. On the home page there is nowhere for it to go, so it
- * renders as plain text rather than as a link that does nothing.
+ * The header mark. On the home page there is nowhere for it to go, so it
+ * renders as plain artwork rather than as a link that does nothing.
  */
 export default function Wordmark({ onNavigate }: { onNavigate?: () => void }) {
   const { pathname } = useLocation();
-  const [logoFailed, setLogoFailed] = useState(false);
   const onHome = pathname === "/";
 
-  const content = logoFailed ? (
-    <>
-      <Keycaps />
-      <span className="hidden text-sm text-[var(--c-muted)] sm:inline">Community Development Lab</span>
-    </>
-  ) : (
-    <img
-      src={LOGO_SRC}
-      alt="CDL — Community Development Lab"
-      onError={() => setLogoFailed(true)}
-      className="logo-mark h-9 w-auto"
-    />
-  );
+  const mark = <CdlMark className="h-7" />;
 
   if (onHome) {
-    return <span className="flex items-center gap-3">{content}</span>;
+    return (
+      <span className="flex items-center">
+        {mark}
+        <span className="sr-only">Community Development Lab</span>
+      </span>
+    );
   }
 
   return (
@@ -73,9 +25,9 @@ export default function Wordmark({ onNavigate }: { onNavigate?: () => void }) {
       to="/"
       onClick={onNavigate}
       title="Back to the home page"
-      className="flex items-center gap-3 rounded-md transition-opacity hover:opacity-70"
+      className="flex items-center rounded-md transition-opacity hover:opacity-70"
     >
-      {content}
+      {mark}
       <span className="sr-only">Back to the home page</span>
     </Link>
   );
