@@ -349,10 +349,16 @@ means adding it to **both** blocks.
 | `--c-heading` | `#0969da` | `#58a6ff` |
 | `--c-green` / `--c-green-hover` | `#238636` / `#2ea043` | same |
 
-The toggle lives in the navigation bar, right after the menu items, and stores the choice in
-`localStorage` under `cdl-theme`. With nothing stored, the visitor's `prefers-color-scheme` is
-used. An inline script in `index.html` applies the attribute **before first paint**, so the
-page never flashes the wrong theme; if you rename the storage key, change it there too.
+**The default is the visitor's own system setting.** A machine set to dark opens the site in
+dark, one set to light opens it in light. Nothing is stored until the visitor uses the toggle,
+and while nothing is stored the page keeps following the system — including a change made
+while the page is open, so a machine that switches to dark in the evening takes the page with
+it. Once they do use the toggle, their choice is saved under `cdl-theme` in `localStorage` and
+from then on it wins over the system.
+
+The toggle lives in the navigation bar, right after the menu items. An inline script in
+`index.html` applies the theme attribute **before first paint**, so the page never flashes the
+wrong theme; if you rename the storage key, change it there too.
 
 Switching adds `theme-switching` to `<html>` for 300ms, which is the only time colour
 transitions are active — so they never slow down hover states.
