@@ -369,8 +369,17 @@ Two stacks, mirroring GitHub:
 
 ### The wordmark
 
-`src/components/Wordmark.tsx` draws the CDL keycaps as inline SVG rather than shipping the
-logo PNG, so it picks up the theme instead of sitting in a white box on the dark background.
+`src/components/Wordmark.tsx` shows the project logo from `public/img/cdl-logo.svg`. If that
+file is missing or fails to load, it falls back to the CDL keycaps drawn as inline SVG, so the
+header never shows a broken image.
+
+**Replacing the logo:** drop the file in at `public/img/cdl-logo.svg`. For a different name or
+format, change `LOGO_SRC` at the top of the component.
+
+The logo carries the `logo-mark` class, which inverts it on the dark theme — the artwork is
+dark line art that would otherwise be invisible on `#0d1117`. If you supply an SVG whose
+strokes use `currentColor`, or one that already reads on both backgrounds, remove that class
+and the matching rule in `index.css`; inverting a logo is a workaround, not the nice solution.
 
 It is a link back to the home page **except on the home page itself**, where it renders as
 plain text — a brand mark that looks clickable but goes nowhere is worse than one that does
