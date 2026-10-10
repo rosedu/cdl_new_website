@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HashLink from "./HashLink";
 import ThemeToggle from "./ThemeToggle";
+import Wordmark from "./Wordmark";
 import { currentEdition, editionPath } from "../data/editions";
 
 const links = [
@@ -33,21 +34,7 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-        <Link
-          to="/"
-          className="flex items-center gap-2.5"
-          onClick={() => setOpen(false)}
-        >
-          <span className="grid h-8 w-8 place-items-center rounded-md border border-[var(--c-border)] bg-[var(--c-surface-2)] font-mono text-xs text-[var(--c-text)]">
-            &gt;_
-          </span>
-          <span className="text-sm font-semibold text-[var(--c-strong)]">
-            CDL
-            <span className="ml-2 hidden font-normal text-[var(--c-muted)] sm:inline">
-              Community Development Lab
-            </span>
-          </span>
-        </Link>
+        <Wordmark onNavigate={() => setOpen(false)} />
 
         <div className="hidden items-center gap-1 md:flex">
           {links.map((l) =>
