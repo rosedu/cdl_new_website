@@ -120,7 +120,7 @@ export const editions: Edition[] = [
       { date: "Saturday, 17 October 2026", time: "10:00-13:00", title: "Advanced Git and collaborative development with GitHub", kind: W },
       { date: "Saturday, 24 October 2026", time: "10:00-13:00", title: "Documentation and the Markdown format", kind: W },
       { date: "Saturday, 31 October 2026", time: "10:00-13:00", title: "Development environments and deployment with Docker", kind: W },
-      { date: "Sunday, 8 November 2026", time: "10:00-13:00", title: "Automation and CI/CD with GitHub Actions", kind: W },
+      { date: "Saturday, 7 November 2026", time: "10:00-13:00", title: "Automation and CI/CD with GitHub Actions", kind: W },
       { date: "Saturday, 14 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
       { date: "Saturday, 21 November 2026", time: "10:00-13:00", title: "Hackathon: work on an open source project", kind: H },
       { date: "Saturday, 28 November 2026", time: "—", title: "Break", kind: B },
